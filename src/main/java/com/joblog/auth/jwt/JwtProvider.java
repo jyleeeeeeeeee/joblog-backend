@@ -1,4 +1,4 @@
-package com.joblog.support.jwt;
+package com.joblog.auth.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -53,9 +54,17 @@ public class JwtProvider {
 
     // 토큰에서 이메일 추출
     public String getEmailFromToken(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(key).build()
+        return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token)
-                .getBody();
-        return claims.getSubject();
+                .getBody().getSubject();
+    }
+
+    // HTTP 헤더에서 토큰 추출
+    public String resolveToken(HttpServletRequest request) {
+        String bearer = request.getHeader("Authorization");
+        if (bearer != null && bearer.startsWith("Bearer ")) {
+            return bearer.substring(7);
+        }
+        return null;
     }
 }

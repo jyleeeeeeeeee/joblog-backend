@@ -1,6 +1,6 @@
-package com.joblog.auth;
+package com.joblog.auth.jwt;
 
-import com.joblog.support.jwt.JwtProvider;
+import com.joblog.auth.jwt.JwtProvider;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import static com.joblog.common.AppConstants.JWT_COOKIE_NAME;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class JwtInterceptor implements HandlerInterceptor {
     private final JwtProvider jwtProvider;

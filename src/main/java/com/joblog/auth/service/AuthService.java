@@ -2,7 +2,7 @@ package com.joblog.auth.service;
 
 import com.joblog.auth.dto.LoginRequest;
 import com.joblog.common.exception.UnauthorizedException;
-import com.joblog.support.jwt.JwtProvider;
+import com.joblog.auth.jwt.JwtProvider;
 import com.joblog.user.entity.User;
 import com.joblog.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

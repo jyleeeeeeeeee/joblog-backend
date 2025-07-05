@@ -1,13 +1,12 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/joblog
-#    url: jdbc:h2:mem:joblog;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
     username: sa
     password:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -27,5 +26,3 @@ logging.level:
     SQL: debug
 jwt:
   secret: my-super-secret-key-that-is-long-enough-to-work
-file:
-  upload-dir: uploads
