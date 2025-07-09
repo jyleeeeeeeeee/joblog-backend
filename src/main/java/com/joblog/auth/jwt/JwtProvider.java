@@ -6,7 +6,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Slf4j
 public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
@@ -59,12 +62,4 @@ public class JwtProvider {
                 .getBody().getSubject();
     }
 
-    // HTTP 헤더에서 토큰 추출
-    public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader("Authorization");
-        if (bearer != null && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
-        }
-        return null;
-    }
 }

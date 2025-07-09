@@ -45,6 +45,7 @@ public class PostService {
                 .content(request.getContent())
                 .user(user)
                 .build();
+        user.addPost(post);
 
         if (attachments != null) {
             for (MultipartFile file : attachments) {

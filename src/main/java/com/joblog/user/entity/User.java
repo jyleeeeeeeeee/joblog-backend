@@ -5,6 +5,7 @@ import com.joblog.post.domain.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto increment 방식
     private Long id;
@@ -36,6 +38,9 @@ public class User {
     @Builder.Default
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     List<Post> posts = new ArrayList<>();
+
+    @Column(nullable = false)
+    private boolean oauthUser = false; // ✅ 소셜 로그인 여부
 
     public void addPost(Post post) {
         posts.add(post);
@@ -58,6 +63,18 @@ public class User {
                 .nickname(nickname)
                 .build();
     }
+
+    // 소셜 사용자 전용 static 팩토리 메서드
+    public static User createOAuthUser(String email, String nickname) {
+        return User.builder()
+                .email(email)
+                .nickname(nickname)
+                .password("oauth2user")  // or UUID
+                .roles(List.of("USER"))
+                .oauthUser(true)
+                .build();
+    }
+
 
     // JWT 생성 시 claim에 roles 포함하려면 필요함
     public List<String> getRoles() {

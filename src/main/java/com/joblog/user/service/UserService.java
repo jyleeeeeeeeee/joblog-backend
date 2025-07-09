@@ -57,8 +57,7 @@ public class UserService {
     }
 
     public List<UserLikedPostResponse> getLikedPosts(User user) {
-        List<UserLikedPostResponse> list = postLikeRepository.findAllByUser(user).stream().map(postLike -> new UserLikedPostResponse(postLike.getPost())).toList();
-        return list;
+        return postLikeRepository.findAllByUser(user).stream().map(postLike -> new UserLikedPostResponse(postLike.getPost())).toList();
     }
 
     private User findUser(String email) {

@@ -24,6 +24,10 @@ public class AuthService {
             throw new UnauthorizedException("비밀번호가 일치하지 않습니다.");
         }
 
+        if(user.isOauthUser()) {
+            throw new UnauthorizedException("소셜 로그인 계정입니다.");
+        }
+
         return jwtProvider.createToken(user.getEmail(), user.getRoles());
     }
 }

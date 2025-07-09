@@ -1,6 +1,7 @@
 package com.joblog.user.controller;
 
 import com.joblog.auth.CustomUserDetails;
+import com.joblog.auth.model.AuthUser;
 import com.joblog.common.resolver.LoginUser;
 import com.joblog.mypage.dto.UserLikedPostResponse;
 import com.joblog.user.dto.MyCommentResponse;
@@ -37,8 +38,8 @@ public class UserController {
      * 현재 로그인한 사용자 정보 조회
      */
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getMyInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        UserResponse response = userService.getUserInfo(userDetails.getUser().getEmail());
+    public ResponseEntity<UserResponse> getMyInfo(@AuthenticationPrincipal AuthUser authUser) {
+        UserResponse response = userService.getUserInfo(authUser.getEmail());
         return ResponseEntity.ok(response);
     }
 

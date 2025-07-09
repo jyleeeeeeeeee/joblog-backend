@@ -3,6 +3,9 @@ package com.joblog.common;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Map;
+import java.util.Set;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class AppConstants {
     // ✅ JWT 관련
@@ -15,4 +18,22 @@ public final class AppConstants {
     // ✅ HTTP 관련
     public static final String COOKIE_PATH = "/"; // 쿠키 경로
     public static final String COOKIE_SAMESITE = "Strict"; // SameSite 설정
+    public static final String GOOGLE = "google";
+    public static final String NAVER = "naver";
+    public static final String KAKAO = "kakao";
+
+    public static final String[] exceptURI = {
+            "/",
+            "/auth/login",
+            "/auth/session-check",
+            "/users/join",
+            "/session/login",
+            "/", "/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png", "/default-ui.css"
+//            "/swagger-ui/**",
+//            "/swagger-ui.html",
+//            "/swagger-resources/**",
+//            "/v3/api-docs/**",
+//            "/v3/api-docs",
+//            "/webjars/**"
+    };
 }

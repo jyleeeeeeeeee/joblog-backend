@@ -1,7 +1,6 @@
 package com.joblog.trace.aop;
 
 import com.joblog.trace.LogTrace;
-import com.joblog.trace.TraceStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,6 +16,7 @@ public class LogTraceAspect {
     private final LogTrace logTrace;
 
     // AOP 적용 대상 지정 (패키지 경로에 맞게 조절하세요)
+//    @Around("@annotation(com.joblog.auth.oauth.LogTrace)")
     @Around("com.joblog.trace.aop.LogTracePointcuts.allApplication()")
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         TraceStatus status = null;
@@ -27,8 +27,12 @@ public class LogTraceAspect {
             logTrace.end(status);               // ✅ 종료 로그
             return result;
         } catch (Exception e) {
-            logTrace.exception(status, e);     // ✅ 예외 로그
+
+            if (status != null) {
+                logTrace.exception(status, e);
+            }
             throw e;
         }
     }
+
 }

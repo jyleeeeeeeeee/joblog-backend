@@ -1,5 +1,6 @@
 package com.joblog.auth;
 
+import com.joblog.auth.model.AuthUser;
 import com.joblog.user.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, AuthUser {
 
     // 실제 사용자 엔티티
     private final User user;
@@ -58,5 +59,20 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    @Override
+    public Long getId() {
+        return user.getId();
+    }
+
+    @Override
+    public String getEmail() {
+        return user.getEmail();
+    }
+
+    @Override
+    public String getNickname() {
+        return user.getNickname();
     }
 }

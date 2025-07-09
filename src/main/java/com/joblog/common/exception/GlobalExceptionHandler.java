@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -78,5 +79,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.of("FORBIDDEN", message));
     }
+
+
+    @ExceptionHandler(OAuth2AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleJwt403Invalid(OAuth2AuthenticationException e) {
+        String message = e.getMessage();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ErrorResponse.of("FORBIDDEN", message));
+    }
+
+
 
 }
