@@ -1,0 +1,35 @@
+services:
+  joblog-mysql:
+    image: mysql:8.0
+    container_name: joblog-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: joblog
+      MYSQL_USER: joblog
+      MYSQL_PASSWORD: joblog1234
+      MYSQL_ROOT_PASSWORD: root1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  joblog-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: joblog-app
+    depends_on:
+      joblog-mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+volumes:
+  mysql-data:

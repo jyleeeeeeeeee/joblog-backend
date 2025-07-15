@@ -52,8 +52,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-
-
         // 1. Authorization 헤더에서 JWT 추출
         String token = resolveToken(request);
         // ✅ 토큰이 없으면 그냥 다음 필터로 넘김 (로그인 안 한 사용자도 접근 가능한 페이지 대비)

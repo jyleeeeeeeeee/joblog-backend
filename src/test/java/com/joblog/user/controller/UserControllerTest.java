@@ -67,7 +67,7 @@ class UserControllerTest {
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isFound()) // ✅ 302
 //                .andExpect(redirectedUrlPattern("**/oauth2/authorization/**")); // ✅ 리다이렉트 경로 검증
-                .andExpect(redirectedUrlPattern("/login-form")); // ✅ 리다이렉트 경로 검증
+                .andExpect(redirectedUrlPattern("**/login")); // ✅ 리다이렉트 경로 검증
     }
 
 

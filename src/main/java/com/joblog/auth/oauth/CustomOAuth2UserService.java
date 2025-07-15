@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-import static com.joblog.common.AppConstants.GOOGLE;
-import static com.joblog.common.AppConstants.NAVER;
-
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {

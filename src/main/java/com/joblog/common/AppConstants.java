@@ -23,12 +23,13 @@ public final class AppConstants {
     public static final String KAKAO = "kakao";
 
     public static final String[] exceptURI = {
-            "/",
+//            "/",
+            "/login",
             "/auth/login",
             "/auth/session-check",
             "/users/join",
             "/session/login",
-            "/", "/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png", "/default-ui.css"
+            "/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png", "/default-ui.css"
 //            "/swagger-ui/**",
 //            "/swagger-ui.html",
 //            "/swagger-resources/**",

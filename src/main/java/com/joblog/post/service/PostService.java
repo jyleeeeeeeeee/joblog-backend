@@ -30,6 +30,7 @@ public class PostService {
     @Value("${file.upload-dir}") // application.yml에서 업로드 경로 주입
     private String uploadDir;
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final FileService fileService;
 
@@ -40,12 +41,15 @@ public class PostService {
      */
     @Transactional
     public Long create(PostRequest request, List<MultipartFile> attachments, User user) throws IOException {
+        User persistentUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Post post = Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
-                .user(user)
+                .user(persistentUser)
                 .build();
-        user.addPost(post);
+        persistentUser.addPost(post);
 
         if (attachments != null) {
             for (MultipartFile file : attachments) {

@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,12 +51,14 @@ public class SecurityConfig {
 //                                .defaultSuccessUrl("/users/me", true)
 //                        .permitAll()
 //                )
-                .formLogin(form -> form
-                        .loginPage("/login-form") // 추후 커스텀 로그인 페이지 연결
-                        .loginProcessingUrl("/auth/login") // 로그인 form action
-                        .defaultSuccessUrl("/", true)
-                        .permitAll()
-                )
+//                .formLogin(form -> form
+//                        .loginPage("/login") // 추후 커스텀 로그인 페이지 연결
+////                        .loginPage("/login-form") // 추후 커스텀 로그인 페이지 연결
+//                        .loginProcessingUrl("/auth/login") // 로그인 form action
+//                        .defaultSuccessUrl("/", true)
+//                        .permitAll()
+//                )
+                .formLogin(Customizer.withDefaults())
                 .sessionManagement(session -> session
                         .maximumSessions(1) // 동시 로그인 제한
                         .maxSessionsPreventsLogin(false)

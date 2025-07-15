@@ -40,6 +40,7 @@ public class User implements Serializable {
     List<Post> posts = new ArrayList<>();
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean oauthUser = false; // ✅ 소셜 로그인 여부
 
     public void addPost(Post post) {
