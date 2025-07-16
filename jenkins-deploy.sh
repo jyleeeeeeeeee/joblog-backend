@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🧪 0. 테스트 실행"
+echo "🧪 0. 테스트 실행zzzzzzz"
 ./gradlew clean test
 
 if [ $? -ne 0 ]; then
