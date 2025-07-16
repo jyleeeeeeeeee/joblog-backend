@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class SampleTest {
+public class SampleTest {
     @Test
     void failThisTest() {
         fail("일부러 실패시킴");
