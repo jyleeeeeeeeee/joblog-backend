@@ -2,7 +2,10 @@ package com.joblog;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Fail.fail;
+
+// src/test/java/.../SampleTest.java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SampleTest {
     @Test
