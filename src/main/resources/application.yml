@@ -4,7 +4,7 @@ spring:
     timeout: 1800s  # ✅ 세션 자체의 TTL (예: 30분)
   data:
     redis:
-      host: localhost
+      host: joblog-redis
       port: 6379
       timeout: 5000ms  # ✅ Redis 연결 타임아웃
     web:
