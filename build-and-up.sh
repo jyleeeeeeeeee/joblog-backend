@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "🧹 1. Spring Boot 전체 빌드 시작..."
-./gradlew clean build -x test
+./gradlew clean build
 
 # 빌드 실패 시 종료
 if [ $? -ne 0 ]; then
