@@ -178,3 +178,15 @@
 1752665604474|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists post_like cascade |     drop table if exists post_like cascade 
 1752665604474|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists user_roles cascade |     drop table if exists user_roles cascade 
 1752665604474|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists users cascade |     drop table if exists users cascade 
+1752666381880|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists comment cascade |     drop table if exists comment cascade 
+1752666381880|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists file_attachment cascade |     drop table if exists file_attachment cascade 
+1752666381880|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists post cascade |     drop table if exists post cascade 
+1752666381881|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists post_like cascade |     drop table if exists post_like cascade 
+1752666381881|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists user_roles cascade |     drop table if exists user_roles cascade 
+1752666381881|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists users cascade |     drop table if exists users cascade 
+1752666496247|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists comment cascade |     drop table if exists comment cascade 
+1752666496248|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists file_attachment cascade |     drop table if exists file_attachment cascade 
+1752666496248|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists post cascade |     drop table if exists post cascade 
+1752666496248|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists post_like cascade |     drop table if exists post_like cascade 
+1752666496248|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists user_roles cascade |     drop table if exists user_roles cascade 
+1752666496248|0|statement|connection 28|url jdbc:h2:mem:testdb|     drop table if exists users cascade |     drop table if exists users cascade 
