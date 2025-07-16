@@ -8,6 +8,6 @@ public class SampleTest {
     @Test
     void failThisTest() {
         System.out.println("🔥 테스트 실행됨");
-        fail("일부러 실패");
+//        fail("일부러 실패");
     }
 }
