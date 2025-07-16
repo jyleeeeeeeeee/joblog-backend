@@ -2,7 +2,6 @@
 FROM openjdk:17-jdk-slim
 
 # 2. 실행할 JAR 파일 이름 설정 (plain 제외)
-#ARG JAR_FILE=build/libs/*-SNAPSHOT.jar
 ARG JAR_FILE=build/libs/app.jar
 
 # 3. 복사 (파일이 하나만 매칭된다는 전제 하에)
