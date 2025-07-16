@@ -76,7 +76,13 @@ tasks.withType(Test).configureEach {
         exceptionFormat "full"
         showStandardStreams = true
     }
+
+    reports {
+        junitXml.required = true   // ✅ Jenkins가 읽는 파일
+        html.required = true       // ✅ 브라우저로 보기 좋음 (선택)
+    }
 }
+
 test {
     useJUnitPlatform()
     testLogging {
