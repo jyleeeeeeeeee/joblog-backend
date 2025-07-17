@@ -7,6 +7,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SampleTest {
     @Test
     void test() {
-        fail("고의로 실패");
+//        fail("고의로 실패");
     }
 }
