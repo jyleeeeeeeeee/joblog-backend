@@ -4,7 +4,6 @@ spring:
     timeout: 1800s  # ✅ 세션 자체의 TTL (예: 30분)
   data:
     redis:
-      host: joblog-redis
       port: 6379
       timeout: 5000ms  # ✅ Redis 연결 타임아웃
     web:
@@ -16,15 +15,11 @@ spring:
       client:
         registration:
           google:
-            client-id: 30928436558-19oibfolu64vg7426jvoaajgjf2pcdj6.apps.googleusercontent.com
-            client-secret: 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
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - email
               - profile
           naver:
-            client-id: VzAqaraWMceZqNQWQpIK
-            client-secret: pYIPzSPxq9
             redirect-uri: "{baseUrl}/login/oauth2/code/naver"
             authorization-grant-type: authorization_code
             scope:
@@ -32,8 +27,6 @@ spring:
               - email
             client-name: Naver
           kakao:
-            client-id: 9926f34f7be4a90bcdb37d01fb29fda0
-            #            client-secret: [??? Client Secret] # ?? ? ?? ?? ??? ??
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
@@ -56,16 +49,6 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/joblog
-    #    url: jdbc:h2:mem:joblog;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-#      url: jdbc:mysql://localhost:3306/joblog?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-#      username: joblog
-#      password: joblog1234
-#      driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update

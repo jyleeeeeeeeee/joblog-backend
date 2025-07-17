@@ -1,5 +1,4 @@
 services:
-  ## redis
   joblog-redis:
     image: redis:7.2
     container_name: joblog-redis

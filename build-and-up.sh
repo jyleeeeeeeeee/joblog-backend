@@ -1,6 +1,10 @@
 #!/bin/bash
 
 echo "🚀 0. Redis 컨테이너 선제 실행"
+#!/bin/bash
+
+export SPRING_PROFILES_ACTIVE=docker
+
 docker-compose up -d joblog-redis
 
 echo "⏳ Redis 준비 대기..."

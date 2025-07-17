@@ -1,7 +1,7 @@
 spring:
   data:
     redis:
-      host: joblog-redis
+      host: localhost
   security:
     oauth2:
       client:
@@ -15,7 +15,6 @@ spring:
           kakao:
             client-id: ${KAKAO_ID}
   datasource:
-    url: ${MYSQL_URL}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
-    driver-class-name: ${MYSQL_DRIVER}
+    url: ${DB_URL}
+    driver-class-name: ${DB_DRIVER}
+    username: ${DB_USER}
