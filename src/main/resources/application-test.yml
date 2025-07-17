@@ -1,7 +1,7 @@
 spring:
   data:
     redis:
-      host: localhost
+      host: joblog-redis
   security:
     oauth2:
       client:
