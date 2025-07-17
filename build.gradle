@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.3'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
 }
 
 group = 'com.joblog'
@@ -11,6 +12,9 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
+jacoco {
+    toolVersion = "0.8.10"
 }
 
 configurations {
@@ -63,31 +67,26 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = true
+    }
+    reports {
+        junitXml.required = true   // ✅ Jenkins XML 리포트
+        html.required = true       // ✅ 로컬 HTML 리포트
+    }
+    finalizedBy jacocoTestReport
 }
 
 //JAR 이름 고정
 bootJar {
     archiveFileName = 'app.jar'
 }
-tasks.withType(Test).configureEach {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-        showStandardStreams = true
-    }
 
+jacocoTestReport {
     reports {
-        junitXml.required = true   // ✅ Jenkins가 읽는 파일
-        html.required = true       // ✅ 브라우저로 보기 좋음 (선택)
-    }
-}
-
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-        showStandardStreams = true
+        xml.required = true        // ✅ Jenkins JaCoCo 통합용
+        html.required = true       // ✅ 브라우저 시각화용
     }
 }
