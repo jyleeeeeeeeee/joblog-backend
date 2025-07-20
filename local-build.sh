@@ -10,6 +10,7 @@ load_env
 echo "🧹 모든 컨테이너 제거"
 docker rm -f joblog-redis joblog-mysql joblog-app joblog-jenkins 2>/dev/null
 
+
 wait_for_redis
 wait_for_db
 run_tests
