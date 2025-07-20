@@ -13,6 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Import(PostIntegrationTest.RedisMockConfig.class)  // ✅ Mock 설정 명시적 import
 public class PostIntegrationTest {
     @Autowired
     MockMvc mockMvc;
@@ -45,8 +54,15 @@ public class PostIntegrationTest {
     private User user;
     private String token;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     @BeforeEach
     void setUp() {
+        // ✅ RedisTemplate의 내부 동작도 mock 설정 (예: session 처리 등에서 호출될 수 있음)
+        ValueOperations<String, Object> valueOperations = mock(ValueOperations.class);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+
         postLikeRepository.deleteAll();
 
         postRepository.deleteAll();
@@ -98,4 +114,19 @@ public class PostIntegrationTest {
         File file = new File(filePath);
         assertThat(file.exists()).isTrue();
     }
+
+    @TestConfiguration
+    static class RedisMockConfig {
+
+        @Bean
+        public RedisTemplate<String, Object> redisTemplate() {
+            RedisTemplate<String, Object> redisTemplate = mock(RedisTemplate.class);
+
+            ValueOperations<String, Object> valueOps = mock(ValueOperations.class);
+            when(redisTemplate.opsForValue()).thenReturn(valueOps);
+
+            return redisTemplate;
+        }
+    }
+
 }
