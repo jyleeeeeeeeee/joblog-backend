@@ -8,6 +8,8 @@ load_env
 
 # 모든 컨테이너 제거 (Jenkins 포함)
 echo "🧹 모든 컨테이너 제거"
+docker rm -f joblog-redis
+
 docker-compose --env-file .env.docker down
 
 wait_for_redis
