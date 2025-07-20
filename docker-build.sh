@@ -24,7 +24,7 @@ fi
 
 # 4. 프로젝트 테스트
 
-export SPRING_PROFILES_ACTIVE=test
+export SPRING_PROFILES_ACTIVE=docker
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 ./gradlew test
 if [ $? -ne 0 ]; then
