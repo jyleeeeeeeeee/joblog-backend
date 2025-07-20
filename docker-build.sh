@@ -64,3 +64,4 @@ echo "✅ 빌드 성공"
 #docker-compose --env-file .env.docker up -d --build joblog-app
 
 echo "🎉 Jenkins 빌드 배포 완료"
+
