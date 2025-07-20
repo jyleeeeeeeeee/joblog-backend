@@ -11,10 +11,6 @@ echo "🧹 모든 컨테이너 제거"
 docker rm -f joblog-redis joblog-mysql joblog-app joblog-jenkins 2>/dev/null
 docker network rm joblog_default 2>/dev/null
 
-# Redis 우선 실행
-echo "🚀 Redis 우선 실행"
-docker-compose --env-file .env.docker up -d joblog-redis
-
 wait_for_redis
 wait_for_db
 run_tests

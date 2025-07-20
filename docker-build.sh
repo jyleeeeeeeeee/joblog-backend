@@ -10,7 +10,6 @@ load_env
 echo "🧹 Redis/MySQL/App 컨테이너 제거 (Jenkins 제외)"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
 
-
 wait_for_redis
 wait_for_db
 run_tests
