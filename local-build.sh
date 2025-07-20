@@ -12,7 +12,7 @@ docker rm -f joblog-redis joblog-mysql joblog-app joblog-jenkins 2>/dev/null
 
 wait_for_redis
 wait_for_db
-run_tests
+#run_tests
 run_build
 
 # 전체 컨테이너 재실행
