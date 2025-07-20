@@ -5,15 +5,14 @@ echo "🐳 [docker-build.sh] Docker 배포 환경 시작"
 export ENV_FILE=.env.docker
 export SPRING_PROFILES_ACTIVE=docker
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
+echo "🧼 [docker-build.sh] Jenkins 제외 초기화 및 컨테이너 재빌드 시작"
 
 echo "🧹 Redis / MySQL / App 컨테이너 강제 제거 (Jenkins 제외)"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
-docker network rm joblog_default 2>/dev/null
+#docker network rm joblog_default 2>/dev/null
 
 echo "🚀 Redis / MySQL 컨테이너 시작"
-#docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql
-
-docker-compose --env-file .env.docker up -d --build
+docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql
 # ⏳ Redis / DB 준비 대기
 
 echo "⏳ Redis 준비 대기..."
