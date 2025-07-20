@@ -1,5 +1,11 @@
 #!/bin/bash
-
+if grep -qaE '(docker|kubepods)' /proc/1/cgroup 2>/dev/null; then
+  echo "🐳 현재 환경: Docker 컨테이너 내부"
+  IS_DOCKER=true
+else
+  echo "🖥️  현재 환경: 로컬 PC (Docker 외부)"
+  IS_DOCKER=false
+fi
 echo "🐳 [docker-build.sh] Docker 배포 환경 시작"
 
 # 1. .env.docker 로드
