@@ -2,6 +2,10 @@
 
 echo "📦 [common.sh] 공통 유틸 로딩"
 
+export ENV_FILE=.env.docker
+export SPRING_PROFILES_ACTIVE=docker
+echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
+
 # .env.docker 변수 로드
 function load_env() {
   export $(grep -v '^#' .env.docker | xargs)
@@ -55,9 +59,6 @@ function wait_for_db() {
 
 # Gradle 테스트 실행
 function run_tests() {
-  export SPRING_PROFILES_ACTIVE=docker
-  echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
-
   ./gradlew test
   if [ $? -ne 0 ]; then
     echo "❌ 테스트 실패. 로그 출력:"
@@ -69,7 +70,6 @@ function run_tests() {
 
 # Gradle 빌드 실행
 function run_build() {
-  export ENV_FILE=.env.docker
   ./gradlew clean build -x test
   if [ $? -ne 0 ]; then
     echo "❌ 빌드 실패. 배포 중단."
