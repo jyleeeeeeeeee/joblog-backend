@@ -16,5 +16,6 @@ spring:
             client-id: ${KAKAO_ID}
   datasource:
     url: ${DB_URL}
-    driver-class-name: ${DB_DRIVER}
     username: ${DB_USER}
+    password:
+    driver-class-name: ${DB_DRIVER}

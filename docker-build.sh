@@ -10,11 +10,9 @@ load_env
 echo "🧹 Redis/MySQL/App 컨테이너 제거 (Jenkins 제외)"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
 
-# Redis 우선 실행
-echo "🚀 Redis 우선 실행"
-docker-compose --env-file .env.docker up -d joblog-redis
 
 wait_for_redis
+wait_for_db
 run_tests
 run_build
 

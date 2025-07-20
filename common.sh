@@ -10,6 +10,10 @@ function load_env() {
 
 # Redis가 올라올 때까지 대기
 function wait_for_redis() {
+  # Redis 우선 실행
+  echo "🚀 Redis 우선 실행"
+  docker-compose --env-file .env.docker up -d joblog-redis
+
   echo "⏳ Redis 준비 대기..."
   for i in {1..10}; do
     docker exec joblog-redis redis-cli ping &> /dev/null && break
@@ -24,6 +28,29 @@ function wait_for_redis() {
     exit 1
   fi
   echo "✅ Redis 정상 응답 확인"
+}
+
+function wait_for_db() {
+  # MySQL 우선 실행
+  echo "🚀 MySQL 우선 실행"
+  docker-compose --env-file .env.docker up -d joblog-mysql
+
+  # MySQL 준비 대기
+  echo "⏳ MySQL 준비 대기..."
+  for i in {1..10}; do
+    docker exec joblog-mysql mysqladmin ping -h localhost &> /dev/null && break
+    echo "MySQL 응답 대기 중... (${i}/10)"
+    sleep 1
+  done
+
+  # 확인
+  docker exec joblog-mysql mysqladmin ping -h localhost &> /dev/null
+  if [ $? -ne 0 ]; then
+    echo "❌ MySQL가 정상적으로 실행되지 않았습니다. 배포 중단."
+    docker logs joblog-mysql
+    exit 1
+  fi
+  echo "✅ MySQL 정상 응답 확인"
 }
 
 # Gradle 테스트 실행
@@ -42,6 +69,7 @@ function run_tests() {
 
 # Gradle 빌드 실행
 function run_build() {
+  export ENV_FILE=.env.docker
   ./gradlew clean build -x test
   if [ $? -ne 0 ]; then
     echo "❌ 빌드 실패. 배포 중단."

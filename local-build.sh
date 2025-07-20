@@ -16,11 +16,11 @@ echo "🚀 Redis 우선 실행"
 docker-compose --env-file .env.docker up -d joblog-redis
 
 wait_for_redis
+wait_for_db
 run_tests
 run_build
 
 # 전체 컨테이너 재실행
 echo "🐳 Docker Compose 전체 재시작"
 docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql joblog-app joblog-jenkins
-
 echo "🎉 로컬 전체 배포 완료"
