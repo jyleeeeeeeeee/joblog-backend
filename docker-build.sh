@@ -22,10 +22,10 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# 4. 프로젝트 테스트
-
 export SPRING_PROFILES_ACTIVE=docker
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
+
+# 4. 프로젝트 테스트
 ./gradlew test
 if [ $? -ne 0 ]; then
   echo "❌ 테스트 실패. 로그 출력:"

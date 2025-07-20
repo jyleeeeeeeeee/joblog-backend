@@ -1,7 +1,9 @@
 package com.joblog.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.joblog.RedisMockConfig;
 import com.joblog.auth.jwt.JwtProvider;
+import com.joblog.post.PostIntegrationTest;
 import com.joblog.user.entity.User;
 import com.joblog.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,12 +22,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+@SpringBootTest(
+        properties = {
+                "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration"
+        }
+)
 
-@SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Import(RedisMockConfig.class)  // ✅ Mock 설정 명시적 import
 class UserControllerTest {
 
     @Autowired
@@ -37,8 +49,14 @@ class UserControllerTest {
     private String jwtToken;
     private User user;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     @BeforeEach
     void setUp() {
+        // ✅ RedisTemplate의 내부 동작도 mock 설정 (예: session 처리 등에서 호출될 수 있음)
+        ValueOperations<String, Object> valueOperations = mock(ValueOperations.class);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
         userRepository.deleteAll();
 
         user = userRepository.save(User.builder()

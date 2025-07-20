@@ -1,6 +1,7 @@
 package com.joblog.post;
 
 
+import com.joblog.RedisMockConfig;
 import com.joblog.auth.jwt.JwtProvider;
 import com.joblog.post.domain.FileAttachment;
 import com.joblog.post.domain.Post;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -35,10 +35,15 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(
+        properties = {
+                "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration"
+        }
+)
+
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@Import(PostIntegrationTest.RedisMockConfig.class)  // ✅ Mock 설정 명시적 import
+@Import(RedisMockConfig.class)  // ✅ Mock 설정 명시적 import
 public class PostIntegrationTest {
     @Autowired
     MockMvc mockMvc;
@@ -113,20 +118,6 @@ public class PostIntegrationTest {
         String filePath = attachments.get(0).getFilePath();
         File file = new File(filePath);
         assertThat(file.exists()).isTrue();
-    }
-
-    @TestConfiguration
-    static class RedisMockConfig {
-
-        @Bean
-        public RedisTemplate<String, Object> redisTemplate() {
-            RedisTemplate<String, Object> redisTemplate = mock(RedisTemplate.class);
-
-            ValueOperations<String, Object> valueOps = mock(ValueOperations.class);
-            when(redisTemplate.opsForValue()).thenReturn(valueOps);
-
-            return redisTemplate;
-        }
     }
 
 }
