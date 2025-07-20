@@ -11,6 +11,8 @@ echo "🧹 Redis/MySQL/App 컨테이너 제거 (Jenkins 제외)"
 #docker rm -f joblog-redis joblog-mysql joblog-app joblog-jenkins 2>/dev/null
 #docker-compose --env-file .env.docker down --remove-orphans
 docker rm -f joblog-redis joblog-mysql joblog-app
+docker-compose --env-file .env.docker down --remove-orphans
+
 
 sleep 5
 
