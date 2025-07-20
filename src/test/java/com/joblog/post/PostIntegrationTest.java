@@ -117,7 +117,8 @@ public class PostIntegrationTest {
         // 파일 저장 경로 확인
         String filePath = attachments.get(0).getFilePath();
         File file = new File(filePath);
-        assertThat(file.exists()).isTrue();
+        assertThat(file).exists();
+        assertThat(file.delete()).isTrue();
     }
 
 }
