@@ -6,22 +6,14 @@ export ENV_FILE=.env.docker
 export SPRING_PROFILES_ACTIVE=docker
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 
-## 🔥 Redis / MySQL / App 컨테이너 및 네트워크만 제거 (Jenkins 제외)
-#echo "🧹 Redis / MySQL / App 컨테이너 및 네트워크 제거 (Jenkins 제외)"
-#docker-compose --env-file .env.docker down --remove-orphans
-#sleep 10
-#
-## ✅ Redis / MySQL 먼저 실행
-#echo "🚀 Redis / MySQL 컨테이너 시작"
-#docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql
 echo "🧹 Redis / MySQL / App 컨테이너 강제 제거 (Jenkins 제외)"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
 docker network rm joblog_default 2>/dev/null
-sleep 5
 
 echo "🚀 Redis / MySQL 컨테이너 시작"
-docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql
-sleep 10
+#docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql
+
+docker-compose --env-file .env.docker up -d --build
 # ⏳ Redis / DB 준비 대기
 
 echo "⏳ Redis 준비 대기..."
