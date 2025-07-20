@@ -55,3 +55,5 @@ echo "🐳 3. Docker Compose로 전체 컨테이너 재실행"
 docker-compose up -d --build
 
 echo "🚀 4. Spring Boot + Redis + MySQL 컨테이너 실행 완료"
+
+PR 보호 테스트용 문장 추가
