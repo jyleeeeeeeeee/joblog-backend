@@ -75,5 +75,6 @@ function run_build() {
     echo "❌ 빌드 실패. 배포 중단."
     exit 1
   fi
+
   echo "✅ 빌드 성공"
 }
