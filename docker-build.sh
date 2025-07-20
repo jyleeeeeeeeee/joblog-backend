@@ -20,4 +20,3 @@ echo "🐳 Docker Compose 재실행 (Jenkins 제외)"
 docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql joblog-app
 
 echo "🎉 Jenkins 빌드 배포 완료"
-
