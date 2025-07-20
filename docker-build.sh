@@ -12,7 +12,7 @@ docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
 docker network rm joblog_default 2>/dev/null
 
 echo "🚀 Redis / MySQL 컨테이너 시작"
-docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql
+docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql joblog-app
 # ⏳ Redis / DB 준비 대기
 
 echo "⏳ Redis 준비 대기..."
