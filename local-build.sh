@@ -9,6 +9,8 @@ load_env
 # 모든 컨테이너 제거 (Jenkins 포함)
 echo "🧹 모든 컨테이너 제거"
 docker rm -f joblog-redis joblog-mysql joblog-app joblog-jenkins 2>/dev/null
+# ✅ 네트워크 제거 추가
+echo "🧹 Docker 네트워크 제거 (옵션 충돌 방지)"
 docker network rm joblog_default 2>/dev/null
 
 wait_for_redis
