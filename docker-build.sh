@@ -1,54 +1,66 @@
-##!/bin/bash
-#
-#echo "🐳 [docker-build.sh] Docker 배포 환경 시작"
-#
-#source ./common.sh
-#
-#load_env
-#
-## 컨테이너 제거 (Jenkins 제외)
-#echo "🧹 Redis/MySQL/App 컨테이너 제거 (Jenkins 제외)"
-##docker rm -f joblog-redis joblog-mysql joblog-app joblog-jenkins 2>/dev/null
-##docker-compose --env-file .env.docker down --remove-orphans
-#docker rm -f joblog-redis joblog-mysql joblog-app
-#docker-compose --env-file .env.docker down --remove-orphans
-#
-#
-#sleep 5
-#
-#
-#wait_for_redis
-#sleep 5
-#wait_for_db
-#sleep 5
-##run_tests
-#run_build
-#sleep 5
-#
-## 8. App 컨테이너만 빌드 후 실행
-#echo "🐳 App 컨테이너 배포"
-#sleep 5
-#docker-compose --env-file .env.docker up -d --build joblog-app
-#sleep 5
-#echo "🎉 Jenkins 빌드 배포 완료"
-
-
 #!/bin/bash
 
 echo "🐳 [docker-build.sh] Docker 배포 환경 시작"
 
-source ./common.sh
-load_env
+export ENV_FILE=.env.docker
+export SPRING_PROFILES_ACTIVE=docker
+echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 
-# 🔥 모든 컨테이너 및 네트워크 제거
-echo "🧹 모든 컨테이너 및 네트워크 제거"
+# 🔥 Redis / MySQL / App 컨테이너 및 네트워크만 제거 (Jenkins 제외)
+echo "🧹 Redis / MySQL / App 컨테이너 및 네트워크 제거 (Jenkins 제외)"
 docker-compose --env-file .env.docker down --remove-orphans
 
-# ✅ 전체 서비스 한꺼번에 실행
-echo "🐳 전체 컨테이너 재생성"
-docker-compose --env-file .env.docker up -d --build
+# ✅ Redis / MySQL 먼저 실행
+echo "🚀 Redis / MySQL 컨테이너 시작"
+docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql
 
-# Gradle 빌드
-run_build
+# ⏳ Redis / DB 준비 대기
+
+echo "⏳ Redis 준비 대기..."
+for i in {1..10}; do
+  docker exec joblog-redis redis-cli ping &> /dev/null && break
+  echo "Redis 응답 대기 중... (${i}/10)"
+  sleep 1
+done
+
+docker exec joblog-redis redis-cli ping &> /dev/null
+if [ $? -ne 0 ]; then
+  echo "❌ Redis가 정상적으로 실행되지 않았습니다. 배포 중단."
+  docker logs joblog-redis
+  exit 1
+fi
+echo "✅ Redis 정상 응답 확인"
+
+# MySQL 우선 실행
+
+# MySQL 준비 대기
+echo "⏳ MySQL 준비 대기..."
+for i in {1..10}; do
+  docker exec joblog-mysql mysqladmin ping -h localhost &> /dev/null && break
+  echo "MySQL 응답 대기 중... (${i}/10)"
+  sleep 1
+done
+
+docker exec joblog-mysql mysqladmin ping -h localhost &> /dev/null
+if [ $? -ne 0 ]; then
+  echo "❌ MySQL가 정상적으로 실행되지 않았습니다. 배포 중단."
+  docker logs joblog-mysql
+  exit 1
+fi
+echo "✅ MySQL 정상 응답 확인"
+
+# 🛠️ Gradle 빌드 (테스트 제외)
+
+./gradlew clean build -x test
+if [ $? -ne 0 ]; then
+  echo "❌ 빌드 실패. 배포 중단."
+  exit 1
+fi
+
+echo "✅ 빌드 성공"
+
+## ✅ App 컨테이너만 실행
+#echo "🚀 App 컨테이너 실행"
+#docker-compose --env-file .env.docker up -d --build joblog-app
 
 echo "🎉 Jenkins 빌드 배포 완료"

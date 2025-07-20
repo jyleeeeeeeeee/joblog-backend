@@ -48,6 +48,7 @@ function wait_for_db() {
   done
 
   # 확인
+docker-compose --env-file .env.docker up -d joblog-mysql
   docker exec joblog-mysql mysqladmin ping -h localhost &> /dev/null
   if [ $? -ne 0 ]; then
     echo "❌ MySQL가 정상적으로 실행되지 않았습니다. 배포 중단."
