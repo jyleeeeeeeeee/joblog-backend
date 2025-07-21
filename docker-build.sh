@@ -83,8 +83,20 @@ echo "🐳 [local-build.sh] local 배포 환경 시작"
 
 export ENV_FILE=.env.docker
 echo "🔍 ENV_FILE: $ENV_FILE"
-cat "$ENV_FILE"echo "📂 현재 디렉토리: $(pwd)"
+cat "$ENV_FILE"
+echo "📂 현재 디렉토리: $(pwd)"
 ls -al
+
+
+
+
+
+
+
+
+
+
+
 export $(grep -v '^#' "$ENV_FILE" | xargs)
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 echo "🧼 [local-build.sh] 로컬 전체 초기화 및 컨테이너 재빌드 시작"
