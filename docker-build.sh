@@ -258,7 +258,7 @@
 #echo "✅ 배포 완료"
 #!/bin/bash
 
-set -e  # 실패 시 중단
+set -e
 
 ENV_FILE=".env.docker"
 
@@ -276,24 +276,33 @@ echo "🧪 1. 테스트 수행"
 echo "🛠️ 2. 애플리케이션 빌드"
 ./gradlew bootJar
 
-# 컨테이너 존재 여부 확인
+echo "🔄 컨테이너 상태 확인"
 if docker-compose ps joblog-app | grep -q 'joblog-app'; then
   echo "🔄 기존 컨테이너 감지됨 → joblog-app만 재시작"
-  docker-compose --env-file $ENV_FILE stop joblog-app || true
+  docker-compose --env-file "$ENV_FILE" stop joblog-app || true
 
   echo "🐳 앱 재시작 (build 포함)"
-  docker-compose --env-file $ENV_FILE up -d --build joblog-app || {
-    echo "❗ 네트워크 에러 감지 → joblog_default 제거 후 재시도"
+  docker-compose --env-file "$ENV_FILE" up -d --build joblog-app || {
+
+    echo "❗ 네트워크 충돌 감지 → 다른 서비스 내리고 네트워크 재생성"
+
+    echo "🧼 관련 서비스 정지: app, mysql, redis"
+    docker-compose --env-file "$ENV_FILE" stop joblog-app joblog-mysql joblog-redis || true
+
+    echo "🌐 네트워크 제거 시도"
     docker network rm joblog_default || true
-    docker-compose --env-file $ENV_FILE up -d --build joblog-app
+
+    echo "♻️ 앱 재시작 재시도"
+    docker-compose --env-file "$ENV_FILE" up -d --build joblog-app
   }
 
 else
   echo "🆕 컨테이너 없음 → 전체 서비스 최초 실행"
-  docker-compose --env-file $ENV_FILE up -d --build || {
-    echo "❗ 네트워크 에러 감지 → joblog_default 제거 후 재시도"
+  docker-compose --env-file "$ENV_FILE" up -d --build || {
+    echo "❗ 네트워크 충돌 감지 → 전체 앱 서비스 정지 후 네트워크 제거"
+    docker-compose --env-file "$ENV_FILE" stop joblog-app joblog-mysql joblog-redis || true
     docker network rm joblog_default || true
-    docker-compose --env-file $ENV_FILE up -d --build
+    docker-compose --env-file "$ENV_FILE" up -d --build
   }
 fi
 
