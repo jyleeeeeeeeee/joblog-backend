@@ -40,7 +40,6 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
-    env_file: ${ENV_FILE}
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     restart: always
