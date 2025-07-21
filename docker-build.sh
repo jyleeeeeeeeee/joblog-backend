@@ -14,7 +14,7 @@ docker network rm joblog_default 2>/dev/null
 
 
 echo "🚀 Redis / MySQL / App 컨테이너 시작"
-docker-compose --env-file .env.docker -p joblog up -d --build joblog-redis joblog-mysql joblog-app
+docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-redis joblog-mysql joblog-app
 
 # ⏳ Redis / MySQL 대기
 echo "⏳ Redis 준비 대기..."
@@ -64,5 +64,9 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 echo "✅ 빌드 성공"
+
+
+echo "🚀App 컨테이너 시작"
+docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-app
 
 echo "🎉 Jenkins 빌드 배포 완료"
