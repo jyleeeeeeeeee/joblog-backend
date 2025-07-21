@@ -1,10 +1,10 @@
-#####!/bin/bash
+#!/bin/bash
+###
+###echo "🐳 [docker-build.sh] docker 배포 환경 시작"
 ####
-####echo "🐳 [docker-build.sh] docker 배포 환경 시작"
-####
-####export ENV_FILE=.env.docker
-####export $(grep -v '^#' "$ENV_FILE" | xargs)
-####echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
+export ENV_FILE=".env.docker"
+export $(grep -v '^#' "$ENV_FILE" | xargs)
+echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 ####
 ####echo "🧼 Jenkins 제외 초기화 및 컨테이너 재빌드 시작"
 ####
