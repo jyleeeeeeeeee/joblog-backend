@@ -1,9 +1,15 @@
 #!/bin/bash
 
-echo "🐳 [local-build.sh] local 배포 환경 시작"
+echo "🐳 [docker-build.sh] Jenkins 배포 환경 시작"
 
+# 📌 환경파일 설정
 export ENV_FILE=.env.docker
 export SPRING_PROFILES_ACTIVE=docker
+
+# ✅ 공통 함수 로드
+source ./common.sh
+load_env
+
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 echo "🧼 [local-build.sh] 로컬 Redis → MySQL → 빌드 → App 순 재배포 시작"
 
@@ -13,6 +19,7 @@ docker-compose -f docker-compose.yml \
                -f docker-compose.redis.yml \
                -f docker-compose.mysql.yml \
                -f docker-compose.app.yml \
+               -f docker-compose.jenkins.yml \
                down --remove-orphans
 
 # ✅ Redis 실행
@@ -70,8 +77,11 @@ echo "✅ 빌드 성공"
 # ✅ App 실행
 echo "🚀 App 컨테이너 실행"
 docker-compose -f docker-compose.yml \
+               -f docker-compose.redis.yml \
+               -f docker-compose.mysql.yml \
                -f docker-compose.app.yml \
                up -d --build joblog-app
+
 
 echo "🎉 App 서비스까지 로컬 배포 완료"
 
