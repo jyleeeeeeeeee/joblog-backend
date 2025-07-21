@@ -277,13 +277,13 @@ echo "🛠️ 2. 애플리케이션 빌드"
 ./gradlew bootJar
 
 # 컨테이너 존재 여부 확인
-if docker compose ps joblog-app | grep -q 'joblog-app'; then
+if docker-compose ps joblog-app | grep -q 'joblog-app'; then
   echo "🔄 기존 컨테이너 감지됨 → joblog-app만 재시작"
-  docker compose --env-file $ENV_FILE stop joblog-app || true
-  docker compose --env-file $ENV_FILE up -d --build joblog-app
+  docker-compose --env-file $ENV_FILE stop joblog-app || true
+  docker-compose --env-file $ENV_FILE up -d --build joblog-app
 else
   echo "🆕 컨테이너 없음 → 전체 서비스 최초 실행"
-  docker compose --env-file $ENV_FILE up -d --build
+  docker-compose --env-file $ENV_FILE up -d --build
 fi
 
 echo "✅ 배포 완료"
