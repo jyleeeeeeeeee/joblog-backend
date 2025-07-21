@@ -5,6 +5,7 @@
 export ENV_FILE=".env.docker"
 export $(grep -v '^#' "$ENV_FILE" | xargs)
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
+docker exec -it joblog-mysql printenv | grep MYSQL
 ####
 ####echo "🧼 Jenkins 제외 초기화 및 컨테이너 재빌드 시작"
 ####
@@ -233,18 +234,6 @@ echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 #echo "🚀 배포 완료"
 #!/bin/bash
 
-set -e  # ❗ 실패 시 즉시 중단
-
-ENV_FILE=".env.docker"  # 📄 환경 변수 파일
-
-# 🔄 환경 변수 로드
-if [ -f "$ENV_FILE" ]; then
-  export $(grep -v '^#' "$ENV_FILE" | xargs)
-else
-  echo "❌ 환경 변수 파일 $ENV_FILE 없음"
-  exit 1
-fi
-
 echo "✅ SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE"
 echo "✅ MYSQL_URL=$MYSQL_URL"
 
@@ -264,7 +253,7 @@ docker rm -f joblog-app || true  # 실행 중이지 않으면 무시
 docker image rm joblog-app || true  # 기존 이미지 제거
 
 echo "🐳 4. Docker Compose 재시작"
-docker-compose --env-file "$ENV_FILE" down
-docker-compose --env-file "$ENV_FILE" up -d --build joblog-app
+docker-compose --env-file $ENV_FILE down
+docker-compose --env-file $ENV_FILE up -d --build joblog-app
 
 echo "✅ 배포 완료"
