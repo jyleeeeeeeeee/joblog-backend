@@ -13,22 +13,21 @@ load_env
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 echo "🧼 Redis → MySQL → 빌드 → App 순 재배포 시작 (Jenkins 제외)"
 
-# 🔧 Redis/MySQL/App 컨테이너가 존재하면 강제 제거 (이름 충돌 방지)
-docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null || true
-
-# ✅ 컨테이너/네트워크 제거
+# ✅ 컨테이너 제거
 docker-compose -f docker-compose.yml \
                -f docker-compose.redis.yml \
                -f docker-compose.mysql.yml \
                -f docker-compose.app.yml \
                --env-file "$ENV_FILE" \
                down --remove-orphans
-docker network rm joblog_joblog
+
+# ✅ 네트워크 제거 (경고 제거 및 설정 충돌 방지)
+echo "🧹 Docker 네트워크 초기화 (joblog_joblog 제거)"
+docker network rm joblog_joblog 2>/dev/null || true
 
 # ✅ Redis 실행
 docker-compose -f docker-compose.yml \
                -f docker-compose.redis.yml \
-               --env-file "$ENV_FILE" \
                up -d --build joblog-redis
 
 # ✅ MySQL 실행
