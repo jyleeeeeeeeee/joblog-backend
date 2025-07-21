@@ -10,11 +10,11 @@ echo "🧼 [local-build.sh] 로컬 전체 초기화 및 컨테이너 재빌드 �
 
 # 🔥 모든 컨테이너 및 네트워크 제거 (Jenkins 포함)
 echo "🧹 모든 컨테이너 및 네트워크 제거"
-docker-compose down
+docker-compose -p joblog -f docker-compose.yml down
 
 # ✅ 전체 컨테이너 재생성 (Jenkins 포함)
 echo "🐳 전체 컨테이너 재생성"
-docker-compose --env-file "$ENV_FILE" up -d --build
+docker-compose --env-file "$ENV_FILE" -p joblog  up -d --build
 
 # ⏳ Redis / MySQL 대기
 echo "⏳ Redis 준비 대기..."
