@@ -10,6 +10,7 @@ echo "🧼 Jenkins 제외 초기화 및 컨테이너 재빌드 시작"
 
 echo "🧹 Redis / MySQL / App 컨테이너 강제 제거 (Jenkins 제외)"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
+docker network rm joblog_joblog 2>/dev/null  # ✅ 추가 필요
 docker network ls
 sleep 5
 #docker network rm joblog_default 2>/dev/null
