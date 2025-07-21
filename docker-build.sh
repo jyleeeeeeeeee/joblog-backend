@@ -280,10 +280,21 @@ echo "🛠️ 2. 애플리케이션 빌드"
 if docker-compose ps joblog-app | grep -q 'joblog-app'; then
   echo "🔄 기존 컨테이너 감지됨 → joblog-app만 재시작"
   docker-compose --env-file $ENV_FILE stop joblog-app || true
-  docker-compose --env-file $ENV_FILE up -d --build joblog-app
+
+  echo "🐳 앱 재시작 (build 포함)"
+  docker-compose --env-file $ENV_FILE up -d --build joblog-app || {
+    echo "❗ 네트워크 에러 감지 → joblog_default 제거 후 재시도"
+    docker network rm joblog_default || true
+    docker-compose --env-file $ENV_FILE up -d --build joblog-app
+  }
+
 else
   echo "🆕 컨테이너 없음 → 전체 서비스 최초 실행"
-  docker-compose --env-file $ENV_FILE up -d --build
+  docker-compose --env-file $ENV_FILE up -d --build || {
+    echo "❗ 네트워크 에러 감지 → joblog_default 제거 후 재시도"
+    docker network rm joblog_default || true
+    docker-compose --env-file $ENV_FILE up -d --build
+  }
 fi
 
 echo "✅ 배포 완료"
