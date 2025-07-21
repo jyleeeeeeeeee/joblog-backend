@@ -14,7 +14,7 @@ docker network rm joblog_default 2>/dev/null
 
 
 echo "🚀 Redis / MySQL / App 컨테이너 시작"
-docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-redis joblog-mysql joblog-app
+docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-redis joblog-mysql
 
 # ⏳ Redis / MySQL 대기
 echo "⏳ Redis 준비 대기..."
