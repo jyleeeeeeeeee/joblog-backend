@@ -249,7 +249,7 @@ echo "🛠️ 2. 애플리케이션 빌드"
 
 echo "🧼 3. 기존 컨테이너 정리"
 docker rm -f joblog-app || true  # 실행 중이지 않으면 무시
-docker image rm joblog-app || true  # 기존 이미지 제거
+#docker image rm joblog-app || true  # 기존 이미지 제거
 
 echo "🐳 4. Docker Compose 재시작"
 docker-compose --env-file .env.docker down
