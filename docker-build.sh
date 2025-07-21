@@ -24,6 +24,7 @@ docker-compose -f docker-compose.yml \
 # ✅ Redis 실행
 docker-compose -f docker-compose.yml \
                -f docker-compose.redis.yml \
+               --env-file "$ENV_FILE" \
                up -d --build joblog-redis
 
 # ✅ MySQL 실행
