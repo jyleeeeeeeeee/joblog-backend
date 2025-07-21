@@ -3,28 +3,20 @@
 echo "🐳 [local-build.sh] local 배포 환경 시작"
 
 export ENV_FILE=.env.docker
-export SPRING_PROFILES_ACTIVE=docker
+export $(grep -v '^#' "$ENV_FILE" | xargs)
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
+
 echo "🧼 [local-build.sh] 로컬 전체 초기화 및 컨테이너 재빌드 시작"
 
 # 🔥 모든 컨테이너 및 네트워크 제거 (Jenkins 포함)
 echo "🧹 모든 컨테이너 및 네트워크 제거"
-docker-compose down --remove-orphans
-docker rm -f $(docker ps -aq)
-
-# 사용자 정의 네트워크 제거 (bridge, host 등 기본 제외)
-docker network prune -f
-
+docker-compose down
 
 # ✅ 전체 컨테이너 재생성 (Jenkins 포함)
 echo "🐳 전체 컨테이너 재생성"
 docker-compose --env-file "$ENV_FILE" up -d --build
 
 # ⏳ Redis / MySQL 대기
-
-# Redis가 올라올 때까지 대기
-# Redis 우선 실행
-
 echo "⏳ Redis 준비 대기..."
 for i in {1..10}; do
   docker exec joblog-redis redis-cli ping &> /dev/null && break
@@ -39,8 +31,6 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 echo "✅ Redis 정상 응답 확인"
-
-# MySQL 우선 실행
 
 # MySQL 준비 대기
 echo "⏳ MySQL 준비 대기..."
