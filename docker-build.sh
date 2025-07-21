@@ -172,5 +172,5 @@ echo "🧹 1. Spring Boot 전체 빌드"
 ./gradlew clean build
 
 echo "🐳 2. Docker Compose 재시작"
-docker-compose down
+docker-compose --env-file $ENV_FILE down
 docker-compose --env-file $ENV_FILE up -d --build
