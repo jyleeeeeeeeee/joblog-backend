@@ -10,9 +10,7 @@ echo "🧼 Jenkins 제외 초기화 및 컨테이너 재빌드 시작"
 
 echo "🧹 Redis / MySQL / App 컨테이너 강제 제거 (Jenkins 제외)"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
-#docker network rm joblog_default 2>/dev/null
-
-
+docker network rm joblog_default 2>/dev/null
 
 echo "🚀 Redis / MySQL / App 컨테이너 시작"
 docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-redis joblog-mysql
@@ -50,10 +48,10 @@ fi
 echo "✅ MySQL 정상 응답 확인"
 
 # 테스트 실행
-echo "⏳ 테스트 준비 대기..."
+echo "🧪 테스트 실행"
+./gradlew clean test
 if [ $? -ne 0 ]; then
-  echo "❌ 테스트 실패. 로그 출력:"
-  ./gradlew test --info
+  echo "❌ 테스트 실패. 배포 중단"
   exit 1
 fi
 echo "✅ 테스트 성공"
