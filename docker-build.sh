@@ -84,13 +84,18 @@ echo "🐳 [local-build.sh] local 배포 환경 시작"
 export ENV_FILE=.env.docker
 export $(grep -v '^#' "$ENV_FILE" | xargs)
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
-
+echo "🔍 ENV_FILE: $ENV_FILE"
+cat "$ENV_FILE"
 echo "🧼 [local-build.sh] 로컬 전체 초기화 및 컨테이너 재빌드 시작"
 docker ps
 sleep 5
 # 🔥 모든 컨테이너 및 네트워크 제거 (Jenkins 포함)
 echo "🧹 모든 컨테이너 및 네트워크 제거"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
+docker ps
+sleep 5
+# ✅ 전체 컨테이너 재생성 (Jenkins 포함)
+echo "🐳 전체 컨테이너 재생성"
 docker-compose --env-file "$ENV_FILE" up -d --build joblog-redis joblog-mysql joblog-app
 #
 docker ps
