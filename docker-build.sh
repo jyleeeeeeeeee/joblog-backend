@@ -12,6 +12,7 @@ echo "🧹 Redis / MySQL / App 컨테이너 강제 제거 (Jenkins 제외)"
 docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
 #docker network rm joblog_default 2>/dev/null
 
+
 echo "🚀 Redis / MySQL / App 컨테이너 시작"
 docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-redis joblog-mysql
 
