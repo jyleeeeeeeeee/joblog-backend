@@ -67,6 +67,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "✅ 테스트 성공"
 
+
 # 🛠️ 빌드
 echo "🔨 Gradle 빌드 시작"
 ./gradlew clean build -x test
