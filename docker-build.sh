@@ -23,6 +23,7 @@ docker-compose -f docker-compose.yml \
                -f docker-compose.app.yml \
                --env-file "$ENV_FILE" \
                down --remove-orphans
+docker network rm joblog_joblog
 
 # ✅ Redis 실행
 docker-compose -f docker-compose.yml \
