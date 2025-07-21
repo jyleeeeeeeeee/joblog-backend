@@ -223,7 +223,9 @@ echo "✅ 빌드 성공"
 
 # 6. 전체 컨테이너 재실행
 echo "🧨 기존 Docker Compose 중지"
-docker-compose --env-file .env.docker down
+#docker-compose --env-file .env.docker down
+
+docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
 
 echo "🐳 Docker Compose 재시작"
 docker-compose --env-file .env.docker up -d --build
