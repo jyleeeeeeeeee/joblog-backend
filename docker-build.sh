@@ -2,8 +2,7 @@
 ###
 ###echo "🐳 [docker-build.sh] docker 배포 환경 시작"
 ####
-export ENV_FILE=".env.docker"
-export $(grep -v '^#' "$ENV_FILE" | xargs)
+export $(grep -v '^#' ".env.docker" | xargs)
 echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 docker exec -it joblog-mysql printenv | grep MYSQL
 ####
@@ -18,7 +17,7 @@ docker exec -it joblog-mysql printenv | grep MYSQL
 ####
 ####
 ####echo "🚀 Redis / MySQL / App 컨테이너 시작"
-####docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-redis joblog-mysql
+####docker-compose --env-file ".env.docker" -p joblog up -d --build joblog-redis joblog-mysql
 ####
 ####docker network ls
 ####sleep 5
@@ -73,7 +72,7 @@ docker exec -it joblog-mysql printenv | grep MYSQL
 ####
 ####
 ####echo "🚀App 컨테이너 시작"
-####docker-compose --env-file "$ENV_FILE" -p joblog up -d --build joblog-app
+####docker-compose --env-file ".env.docker" -p joblog up -d --build joblog-app
 ####
 ####echo "🎉 Jenkins 빌드 배포 완료"
 ####
@@ -82,7 +81,7 @@ docker exec -it joblog-mysql printenv | grep MYSQL
 ###
 ###echo "🐳 [local-build.sh] local 배포 환경 시작"
 ###
-###export $(grep -v '^#' "$ENV_FILE" | xargs)
+###export $(grep -v '^#' ".env.docker" | xargs)
 ###echo "🧪 프로필 설정 : ${SPRING_PROFILES_ACTIVE}"
 ###echo "🧼 [local-build.sh] 로컬 전체 초기화 및 컨테이너 재빌드 시작"
 ###docker ps
@@ -94,7 +93,7 @@ docker exec -it joblog-mysql printenv | grep MYSQL
 ###sleep 5
 #### ✅ 전체 컨테이너 재생성 (Jenkins 포함)
 ###echo "🐳 전체 컨테이너 재생성"
-###docker-compose --env-file "$ENV_FILE" up -d --build joblog-redis joblog-mysql joblog-app
+###docker-compose --env-file ".env.docker" up -d --build joblog-redis joblog-mysql joblog-app
 ####
 ###docker ps -a
 ###docker ps
@@ -162,7 +161,7 @@ docker exec -it joblog-mysql printenv | grep MYSQL
 ##export ENV_FILE=".env.docker"
 ##
 ### 🔄 환경 변수 로드
-##export $(grep -v '^#' "$ENV_FILE" | xargs)
+##export $(grep -v '^#' ".env.docker" | xargs)
 ##
 ### ✅ 확인 출력
 ##echo "✅ SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE"
@@ -173,8 +172,8 @@ docker exec -it joblog-mysql printenv | grep MYSQL
 ##./gradlew clean build
 ##
 ##echo "🐳 2. Docker Compose 재시작"
-##docker-compose --env-file $ENV_FILE down
-##docker-compose --env-file $ENV_FILE up -d --build
+##docker-compose --env-file .env.docker down
+##docker-compose --env-file .env.docker up -d --build
 ##!/bin/bash
 #
 #echo "🐳 [docker-build.sh] Docker 배포 환경 시작"
@@ -253,7 +252,7 @@ docker rm -f joblog-app || true  # 실행 중이지 않으면 무시
 docker image rm joblog-app || true  # 기존 이미지 제거
 
 echo "🐳 4. Docker Compose 재시작"
-docker-compose --env-file $ENV_FILE down
-docker-compose --env-file $ENV_FILE up -d --build joblog-app
+docker-compose --env-file .env.docker down
+docker-compose --env-file .env.docker up -d --build joblog-app
 
 echo "✅ 배포 완료"
