@@ -21,8 +21,6 @@ docker-compose -f docker-compose.yml \
                -f docker-compose.mysql.yml \
                -f docker-compose.app.yml \
                down --remove-orphans
-# 🔧 Redis/MySQL/App 컨테이너가 존재하면 강제 제거 (이름 충돌 방지)
-docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null || true
 
 # ✅ Redis 실행
 echo "🚀 Redis 컨테이너 실행"
