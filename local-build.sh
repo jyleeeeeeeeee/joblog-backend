@@ -80,6 +80,7 @@ docker-compose -f docker-compose.yml \
                -f docker-compose.redis.yml \
                -f docker-compose.mysql.yml \
                -f docker-compose.app.yml \
+               --env-file "$ENV_FILE" \
                up -d --build joblog-app
 
 
