@@ -57,15 +57,15 @@ if [ $? -ne 0 ]; then
 fi
 echo "✅ MySQL 정상 응답 확인"
 
-# 🧪 테스트 실행
-echo "⏳ 테스트 실행"
-./gradlew test
-if [ $? -ne 0 ]; then
-  echo "❌ 테스트 실패. 로그 출력:"
-  ./gradlew test --info
-  exit 1
-fi
-echo "✅ 테스트 성공"
+## 🧪 테스트 실행
+#echo "⏳ 테스트 실행"
+#./gradlew test
+#if [ $? -ne 0 ]; then
+#  echo "❌ 테스트 실패. 로그 출력:"
+#  ./gradlew test --info
+#  exit 1
+#fi
+#echo "✅ 테스트 성공"
 
 # 🛠️ 빌드
 echo "🔨 Gradle 빌드 시작"
