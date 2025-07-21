@@ -157,9 +157,20 @@
 ##
 ##echo "🚀 배포 완료"
 
+# 🔧 사용할 .env 파일 지정
+ENV_FILE=".env.docker"
+
+# 🔄 환경 변수 로드
+export $(grep -v '^#' "$ENV_FILE" | xargs)
+
+# ✅ 확인 출력
+echo "✅ SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE"
+echo "✅ MYSQL_URL=$MYSQL_URL"
+echo "✅ GOOGLE_ID=$GOOGLE_ID"
+
 echo "🧹 1. Spring Boot 전체 빌드"
 ./gradlew clean build
 
 echo "🐳 2. Docker Compose 재시작"
 docker-compose down
-docker-compose --env-file .env.docker up -d --build
+docker-compose --env-file $ENF_FILE up -d --build
