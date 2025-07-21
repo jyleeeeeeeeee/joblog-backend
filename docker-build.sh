@@ -162,4 +162,4 @@ echo "🧹 1. Spring Boot 전체 빌드"
 
 echo "🐳 2. Docker Compose 재시작"
 docker-compose down
-docker-compose up -d --build
+docker-compose --env-file .env.docker up -d --build
