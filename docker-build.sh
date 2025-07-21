@@ -21,10 +21,6 @@ docker-compose -f docker-compose.yml \
                --env-file "$ENV_FILE" \
                down --remove-orphans
 
-# ✅ 네트워크 제거 (경고 제거 및 설정 충돌 방지)
-echo "🧹 Docker 네트워크 초기화 (joblog_joblog 제거)"
-docker network rm joblog_joblog 2>/dev/null || true
-
 # ✅ Redis 실행
 docker-compose -f docker-compose.yml \
                -f docker-compose.redis.yml \
