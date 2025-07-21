@@ -46,6 +46,21 @@ if [ $? -ne 0 ]; then
 fi
 echo "✅ MySQL 정상 응답 확인"
 
+# 테스트 실행
+echo "⏳ 테스트 준비 대기..."
+if [ $? -ne 0 ]; then
+  echo "❌ 테스트 실패. 로그 출력:"
+  ./gradlew test --info
+  exit 1
+fi
+echo "✅ 테스트 성공"
+
+# 🛠️ 빌드 실행
+./gradlew clean build -x test
+if [ $? -ne 0 ]; then
+  echo "❌ 빌드 실패. 배포 중단."
+  exit 1
+fi
 echo "✅ 빌드 성공"
 
 echo "🎉 Jenkins 빌드 배포 완료"

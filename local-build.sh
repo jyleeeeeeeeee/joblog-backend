@@ -49,13 +49,11 @@ fi
 echo "✅ MySQL 정상 응답 확인"
 
 # 🛠️ 빌드 실행
-
 ./gradlew clean build -x test
 if [ $? -ne 0 ]; then
   echo "❌ 빌드 실패. 배포 중단."
   exit 1
 fi
-
 echo "✅ 빌드 성공"
 
 echo "🎉 로컬 전체 배포 완료"
