@@ -95,7 +95,8 @@ docker ps
 sleep 5
 # ✅ 전체 컨테이너 재생성 (Jenkins 포함)
 echo "🐳 전체 컨테이너 재생성"
-docker-compose --env-file "$ENV_FILE" up -d --build
+docker-compose --env-file "$ENV_FILE" up -d --build joblog-redis joblog-mysql joblog-app
+#
 docker ps
 sleep 5
 check_redis
