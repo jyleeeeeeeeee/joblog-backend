@@ -27,7 +27,7 @@ docker rm -f joblog-redis joblog-mysql joblog-app 2>/dev/null
 check_networks
 
 echo "🚀 Redis / MySQL / App 컨테이너 시작"
-docker-compose --env-file .env.docker up -d --build joblog-redis joblog-mysql joblog-app
+docker-compose --env-file .env.docker -p joblog up -d --build joblog-redis joblog-mysql joblog-app
 
 # 컨테이너 생성 후 네트워크 확인
 check_networks
@@ -37,7 +37,7 @@ check_networks
 echo "✅ 빌드 성공"
 
 echo "🚀 App 컨테이너 재시작"
-docker-compose --env-file .env.docker up -d --build joblog-app
+docker-compose --env-file .env.docker -p joblog up -d --build joblog-app
 
 # App 컨테이너 실행 후 네트워크 확인
 check_networks
