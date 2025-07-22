@@ -6,7 +6,6 @@ pipeline {
     }
 
     tools {
-        jdk 'jdk17' // Jenkins에 등록된 JDK 이름 (없으면 생략 가능)
     }
 
     stages {
