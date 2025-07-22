@@ -4,7 +4,9 @@
 # 위치: joblog-backend/build-and-deploy.sh
 
 set -e  # 실패 시 즉시 종료
-
+echo "📁 현재 디렉토리: $PWD"
+cd "$(dirname "$0")"  # 👉 항상 joblog-backend 기준에서 실행되도록 보장
+echo "📁 현재 디렉토리: $PWD"
 ENV_FILE=".env.docker"
 
 echo "📦 .env 환경변수 로드"
