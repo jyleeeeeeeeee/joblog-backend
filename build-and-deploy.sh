@@ -20,6 +20,15 @@ export $(grep -v '^#' "$ENV_FILE" | xargs)
 echo "🧪 Gradle 테스트 및 빌드 시작"
 ./gradlew clean build
 
+echo "🐳 Docker 이미지 빌드"
+docker build -t $IMAGE_NAME:$TAG .
+
+echo "🔐 Docker Hub 로그인"
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+echo "📤 Docker Hub 푸시"
+docker push $IMAGE_NAME:$TAG
+
 echo "🧼 기존 컨테이너 종료"
 docker-compose --env-file "$ENV_FILE" down
 

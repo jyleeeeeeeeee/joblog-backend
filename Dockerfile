@@ -1,6 +1,8 @@
 # 1. Java 17 경량 이미지
 FROM openjdk:17-jdk-slim
 
+WORKDIR /app
+
 # 2. 실행할 JAR 파일 이름 설정 (plain 제외)
 ARG JAR_FILE=build/libs/app.jar
 
