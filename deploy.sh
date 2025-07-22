@@ -13,6 +13,7 @@ pwd
 echo "🚀 Oracle 서버에 SSH 접속 후 배포 시작"
 ssh -i "$KEY_PATH" $REMOTE_USER@$REMOTE_HOST <<EOF
   cd $TARGET_DIR
+  pwd
   ls -al | grep '.env*'
 
   echo "🔄 기존 컨테이너 중지"
