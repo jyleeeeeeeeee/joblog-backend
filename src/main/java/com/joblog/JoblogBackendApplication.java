@@ -18,7 +18,7 @@ public class JoblogBackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(JoblogBackendApplication.class, args);
-        log.info("Server Started at {}", LocalDateTime.now());
+        log.info("Server Started at {}.", LocalDateTime.now());
     }
 
     @PostConstruct
