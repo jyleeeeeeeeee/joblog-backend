@@ -20,5 +20,5 @@ ssh -i "$KEY_PATH" $REMOTE_USER@$REMOTE_HOST <<EOF
   echo "🚀 컨테이너 재시작"
   docker-compose up -d
 
-  echo "✅ 배포 완료"
+  echo "✅ 배포 완료!"
 EOF
