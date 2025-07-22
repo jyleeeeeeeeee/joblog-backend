@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 @Slf4j
@@ -17,7 +18,7 @@ public class JoblogBackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(JoblogBackendApplication.class, args);
-        log.info("SERVER STARTED");
+        log.info("Server Started at {}", LocalDateTime.now());
     }
 
     @PostConstruct
