@@ -38,3 +38,4 @@ out/
 build
 ./idea
 .env*
+*local*

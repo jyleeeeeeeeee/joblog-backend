@@ -7,15 +7,15 @@ spring:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_ID}
-            client-secret: ${GOOGLE_SECRET}
+            client-id: 30928436558-19oibfolu64vg7426jvoaajgjf2pcdj6.apps.googleusercontent.com
+            client-secret: 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
           naver:
-            client-id: ${NAVER_ID}
-            client-secret: ${NAVER_SECRET}
+            client-id: VzAqaraWMceZqNQWQpIK
+            client-secret: pYIPzSPxq9
           kakao:
-            client-id: ${KAKAO_ID}
+            client-id: 9926f34f7be4a90bcdb37d01fb29fda0
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
+    url: jdbc:h2:tcp://localhost/~/joblog
+    driver-class-name: org.h2.Driver
+    username: sa
     password:
-    driver-class-name: ${DB_DRIVER}
