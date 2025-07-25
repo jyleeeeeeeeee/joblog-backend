@@ -1,5 +1,5 @@
 # 1. Java 17 경량 이미지
-FROM eclipse-temurin:17-jdk
+FROM openjdk:17-slim
 
 WORKDIR /app
 
