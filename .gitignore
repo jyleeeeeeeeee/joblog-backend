@@ -39,5 +39,4 @@ build
 ./idea
 .env*
 application-local.yml
-
 *.pem
