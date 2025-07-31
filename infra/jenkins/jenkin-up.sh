@@ -13,4 +13,3 @@ else
   echo "🔑 Jenkins 초기 비밀번호:"
   docker exec "$CONTAINER_NAME" cat /var/jenkins_home/secrets/initialAdminPassword 2>/dev/null || echo "⚠️ 비밀번호를 가져올 수 없습니다. 컨테이너가 아직 준비되지 않았거나 최초 실행이 아닐 수 있습니다."
 fi
-
