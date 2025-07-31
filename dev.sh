@@ -14,7 +14,7 @@ fi
 # 서버 정보
 REMOTE_USER=ubuntu
 REMOTE_HOST=$REMOTE_HOST
-KEY_PATH="/home/ubuntu/.ssh/joblog-key.pem"   # ✅ PEM 파일 절대경로로 수정
+KEY_PATH="/var/jenkins_home/.ssh/joblog-key.pem"  # ✅ PEM 파일 절대경로로 수정
 TARGET_DIR="/home/ubuntu/joblog"
 
 echo "🔐 PEM 경로: $KEY_PATH"
