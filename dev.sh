@@ -21,9 +21,14 @@ TARGET_DIR="/home/ubuntu/joblog"
 echo "🔐 PEM 경로: $KEY_PATH"
 ls -l "$KEY_PATH"
 
-echo "🚚 Dev 서버로 .env.dev 전송 중..."
-scp -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" "$ENV_FILE" "$REMOTE_USER@$REMOTE_HOST:$TARGET_DIR/"
+# 📂 파일 전송
+echo "🚚 Dev 서버로 .env.dev, docker-compose.yml 전송 중..."
+scp -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" \
+  "$ENV_FILE" \
+  docker-compose.yml \
+  "$REMOTE_USER@$REMOTE_HOST:$TARGET_DIR/"
 
+# 🚀 원격 서버에서 배포 수행
 echo "🚀 Dev 서버에서 배포 실행..."
 ssh -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" "$REMOTE_USER@$REMOTE_HOST" <<EOF
   set -e
