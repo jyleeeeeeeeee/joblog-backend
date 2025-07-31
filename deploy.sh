@@ -2,7 +2,7 @@
 set -e
 
 # 📦 환경 변수 로드
-ENV_FILE=".env.docker"
+ENV_FILE=".env.dev"
 if [ -f "$ENV_FILE" ]; then
   echo "📄 환경 변수 로딩: $ENV_FILE"
   export $(grep -v '^#' "$ENV_FILE" | xargs)
