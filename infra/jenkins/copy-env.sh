@@ -8,4 +8,4 @@
 # http://43.200.13.189:8080
 #Prod
 # http://43.203.82.227:8080
-#scp -i joblog-key.pem .env.dev ubuntu@3.39.89.212:~/jenkins/jenkins_home/workspace/joblog/.env.dev
+#scp -i joblog-key.pem .env.dev .env.staging .env.prod ubuntu@3.39.89.212:~/jenkins/jenkins_home/workspace/joblog/.env.dev
