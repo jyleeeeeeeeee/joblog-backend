@@ -38,8 +38,10 @@ ssh -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" "$REMOTE_USER@$REMOTE_HO
   set -e
   cd $TARGET_DIR
 
-  echo "📄 .env.dev → .env 복사 중..."
-  rm -rf .env.dev
+  echo "📄 .env 삭제"
+  rm -rf .env
+
+  echo "📄 .env.dev → .env 복사"
   cp .env.dev .env
 
   echo "🛑 기존 컨테이너 중지 중..."
