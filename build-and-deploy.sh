@@ -1,9 +1,4 @@
 #!/bin/bash
-
-docker ps
-echo "docker ps 출력"
-sleep 10
-
 set -e  # 에러 발생 시 즉시 중단
 
 echo "📁 현재 디렉토리: $PWD"
