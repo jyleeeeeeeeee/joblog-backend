@@ -2,7 +2,11 @@
 set -e
 
 # 📦 환경 변수 로드
-ENV_FILE=".env.dev"
+#ENV_FILE=".env.dev"
+# 절대 경로 지정
+ENV_FILE="/var/jenkins_home/workspace/joblog/.env.dev"
+COMPOSE_FILE="/var/jenkins_home/workspace/joblog/docker-compose.yml"
+
 if [ -f "$ENV_FILE" ]; then
   echo "📄 환경 변수 로딩: $ENV_FILE"
   export $(grep -v '^#' "$ENV_FILE" | xargs)
@@ -25,7 +29,7 @@ ls -l "$KEY_PATH"
 echo "🚚 Dev 서버로 .env.dev, docker-compose.yml 전송 중..."
 scp -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" \
   "$ENV_FILE" \
-  docker-compose.yml \
+  "$COMPOSE_FILE" \
   "$REMOTE_USER@$REMOTE_HOST:$TARGET_DIR/"
 
 # 🚀 원격 서버에서 배포 수행
