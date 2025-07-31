@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: jenkins-docker.Dockerfile
     container_name: joblog-jenkins
-    image: jenkins/jenkins:lts-jdk17
+#    image: jenkins/jenkins:lts-jdk17
     ports:
       - "9090:8080"     # Jenkins 웹
       - "50000:50000"   # 에이전트용
