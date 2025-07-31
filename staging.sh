@@ -2,7 +2,7 @@
 set -e
 
 # 📦 환경 변수 로드
-ENV_FILE=".env.dev"
+ENV_FILE=".env.staging"
 if [ -f "$ENV_FILE" ]; then
   echo "📄 환경 변수 로딩: $ENV_FILE"
   export $(grep -v '^#' "$ENV_FILE" | xargs)
@@ -14,7 +14,7 @@ fi
 # 서버 정보
 REMOTE_USER=ubuntu
 REMOTE_HOST=$REMOTE_HOST
-KEY_PATH=/var/jenkins_home/.ssh/joblog-key.pem
+KEY_PATH=~/.ssh/joblog-key.pem
 TARGET_DIR=/home/ubuntu/joblog
 
 echo "🚚 서버에 .env 파일 전송"
