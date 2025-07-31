@@ -3,7 +3,7 @@
 set -e  # 에러 시 즉시 종료
 
 # ✅ Jenkins 컨테이너 이름 (docker-compose.yml과 일치해야 함)
-CONTAINER_NAME="joblog-jenkins"
+CONTAINER_NAME="jenkins"
 
 # ✅ docker-compose.yml 위치로 이동
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
