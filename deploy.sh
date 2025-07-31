@@ -1,16 +1,26 @@
 #!/bin/bash
 set -e
 
-# Oracle 서버 정보
+# 📦 환경 변수 로드
+ENV_FILE=".env.docker"
+if [ -f "$ENV_FILE" ]; then
+  echo "📄 환경 변수 로딩: $ENV_FILE"
+  export $(grep -v '^#' "$ENV_FILE" | xargs)
+else
+  echo "❌ $ENV_FILE 파일이 존재하지 않습니다."
+  exit 1
+fi
+
+# 서버 정보
 REMOTE_USER=ubuntu
-REMOTE_HOST=138.2.35.116
-KEY_PATH=/var/jenkins_home/.ssh/oracle-key.pem
+REMOTE_HOST=$REMOTE_HOST
+KEY_PATH=/var/jenkins_home/.ssh/joblog-key.pem
 TARGET_DIR=/home/ubuntu/joblog
 
-echo "🚚 Oracle 서버에 .env 파일 전송"
-scp -i "$KEY_PATH" .env.docker $REMOTE_USER@$REMOTE_HOST:$TARGET_DIR/
+echo "🚚 서버에 .env 파일 전송"
+scp -i "$KEY_PATH" "$ENV_FILE" $REMOTE_USER@$REMOTE_HOST:$TARGET_DIR/
 
-echo "🚀 Oracle 서버에 SSH 접속 후 배포 시작"
+echo "🚀 서버에 SSH 접속 후 배포 시작"
 ssh -i "$KEY_PATH" $REMOTE_USER@$REMOTE_HOST <<EOF
   cd $TARGET_DIR
 
