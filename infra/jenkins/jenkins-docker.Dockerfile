@@ -6,7 +6,7 @@ USER root
 
 # 도구 설치
 RUN apt-get update && \
-    apt-get install -y docker.io docker-compose && \
+    apt-get install -y docker.io docker compose && \
     apt-get clean
 
 # 시간대 설정

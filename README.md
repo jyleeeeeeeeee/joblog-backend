@@ -12,8 +12,8 @@ Push 이벤트 발생 시 Jenkins가 아래 과정을 자동으로 실행합니�
 2. Redis 준비 상태 확인 (PING 응답 확인)
 3. Gradle 빌드 및 테스트 수행 (`./gradlew clean build`)
 4. 실패 시 즉시 중단, 성공 시 다음 단계로 진행
-5. 기존 컨테이너 중지 및 삭제 (`docker-compose down`)
-6. 모든 컨테이너 재빌드 및 실행 (`docker-compose up -d --build`)
+5. 기존 컨테이너 중지 및 삭제 (`docker compose down`)
+6. 모든 컨테이너 재빌드 및 실행 (`docker compose up -d --build`)
 
 ---
 
@@ -24,7 +24,7 @@ Push 이벤트 발생 시 Jenkins가 아래 과정을 자동으로 실행합니�
 #!/bin/bash
 
 echo "🚀 0. Redis 컨테이너 선제 실행"
-docker-compose up -d joblog-redis
+docker compose up -d joblog-redis
 
 echo "⏳ Redis 준비 대기..."
 for i in {1..10}; do
@@ -49,9 +49,9 @@ fi
 echo "✅ 빌드 성공"
 
 echo "🧨 2. 기존 Docker Compose 중지 및 정리"
-docker-compose down
+docker compose down
 
 echo "🐳 3. Docker Compose로 전체 컨테이너 재실행"
-docker-compose up -d --build
+docker compose up -d --build
 
 echo "🚀 4. Spring Boot + Redis + MySQL 컨테이너 실행 완료"

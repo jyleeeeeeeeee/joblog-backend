@@ -10,7 +10,7 @@
 #   fi
 # else
 #   echo "🚀 Jenkins 컨테이너가 존재하지 않습니다. 새로 생성 후 실행합니다..."
-   docker-compose up -d
+   docker compose up -d
    sudo cat ~/jenkins_home/secrets/initialAdminPassword
 #
 #   echo ""
