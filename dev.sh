@@ -38,20 +38,19 @@ ssh -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" "$REMOTE_USER@$REMOTE_HO
   set -e
   cd $TARGET_DIR
 
+  echo "📄 .env.dev → .env 복사 중..."
+  rm -rf .env.dev
+  cp .env.dev .env
+
   echo "🛑 기존 컨테이너 중지 중..."
-  docker compose --env-file .env.dev down
+  docker compose down
 
   echo "🐳 최신 Docker 이미지 Pull..."
-  docker compose --env-file .env.dev pull
+  docker compose pull
 
   echo "🚀 Docker Compose 재시작..."
-  docker compose --env-file .env.dev up -d
+  docker compose up -d
 
   echo "✅ Dev 서버 배포 완료!"
 EOF
 
-# scp 테스트
-scp -o StrictHostKeyChecking=no \
-  -i /var/jenkins_home/.ssh/joblog-key.pem \
-  /var/jenkins_home/workspace/joblog/.env.dev \
-  ubuntu@3.39.89.212:/home/ubuntu/joblog/
