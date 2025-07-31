@@ -1,5 +1,9 @@
 #!/bin/bash
 
+docker ps
+echo "docker ps 출력"
+sleep 10
+
 set -e  # 에러 발생 시 즉시 중단
 
 echo "📁 현재 디렉토리: $PWD"
@@ -20,9 +24,6 @@ echo "🏷️ Tag: $TAG"
 echo "🧹 Gradle clean & build 시작..."
 ./gradlew clean build -x test
 
-docker ps
-echo "docker ps 출력"
-sleep 10
 # 🐳 Docker 이미지 빌드
 echo "🐳 Docker 이미지 빌드 시작..."
 IMAGE_TAG="$DOCKER_USERNAME/$REPO_NAME:$TAG"
