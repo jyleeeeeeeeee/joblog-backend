@@ -49,3 +49,9 @@ ssh -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" "$REMOTE_USER@$REMOTE_HO
 
   echo "✅ Dev 서버 배포 완료!"
 EOF
+
+# scp 테스트
+scp -o StrictHostKeyChecking=no \
+  -i /var/jenkins_home/.ssh/joblog-key.pem \
+  /var/jenkins_home/workspace/joblog/.env.dev \
+  ubuntu@3.39.89.212:/home/ubuntu/joblog/
