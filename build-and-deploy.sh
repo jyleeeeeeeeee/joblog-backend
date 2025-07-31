@@ -11,7 +11,8 @@ DOCKER_USERNAME=${DOCKER_USERNAME:-"jyleeeeeeeeee"}
 REPO_NAME=${REPO_NAME:-"joblog"}
 TAG=${TAG:-"latest"}
 
-echo "👤 Username: $DOCKER_USERNAME"
+echo "👤 $DOCKER_USERNAME: $DOCKER_USERNAME"
+echo "👤 $DOCKER_PASSWORD: $DOCKER_PASSWORD"
 echo "📦 Repo: $REPO_NAME"
 echo "🏷️ Tag: $TAG"
 
