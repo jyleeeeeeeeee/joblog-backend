@@ -20,12 +20,12 @@ echo "🏷️ Tag: $TAG"
 echo "🧹 Gradle clean & build 시작..."
 ./gradlew clean build -x test
 
-# 🐳 Docker 이미지 빌드
-echo "🐳 Docker 이미지 빌드 시작..."
-IMAGE_TAG="$DOCKER_USERNAME/$REPO_NAME:$TAG"
 docker ps
 echo "docker ps 출력"
 sleep 10
+# 🐳 Docker 이미지 빌드
+echo "🐳 Docker 이미지 빌드 시작..."
+IMAGE_TAG="$DOCKER_USERNAME/$REPO_NAME:$TAG"
 docker build -t "$IMAGE_TAG" .
 
 # 🔐 Docker Hub 로그인
