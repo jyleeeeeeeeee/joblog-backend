@@ -29,14 +29,14 @@ ssh -o UserKnownHostsFile="$KNOWN_HOSTS" -i "$KEY_PATH" "$REMOTE_USER@$REMOTE_HO
   set -e
   cd $TARGET_DIR
 
-  echo "🔄 기존 컨테이너 중지"
-  docker compose down
+  echo "🛑 기존 컨테이너 중지 중..."
+  docker compose --env-file .env.dev down
 
-  echo "🐳 최신 Docker 이미지 pull"
-  docker compose pull
+  echo "🐳 최신 Docker 이미지 Pull..."
+  docker compose --env-file .env.dev pull
 
-  echo "🚀 컨테이너 재시작"
-  docker compose up -d
+  echo "🚀 Docker Compose 재시작..."
+  docker compose --env-file .env.dev up -d
 
-  echo "✅ 배포 완료!"
+  echo "✅ Dev 서버 배포 완료!"
 EOF
