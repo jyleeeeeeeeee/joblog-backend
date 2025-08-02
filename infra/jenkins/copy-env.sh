@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Jenkins
-# http://3.37.2.69:8080
+# http://15.164.224.34:8080
 #Dev
 # http://3.39.89.212:8080
 #Staging
