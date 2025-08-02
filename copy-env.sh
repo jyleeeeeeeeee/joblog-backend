@@ -3,6 +3,7 @@
 
 ls
 echo "📦 .env.dev → Jenkins 컨테이너로 복사"
+
 docker cp ./env/.env.dev joblog-jenkins:/var/jenkins_home/workspace/joblog/.env.dev
 
 echo "📦 .env.staging → Jenkins 컨테이너로 복사"
