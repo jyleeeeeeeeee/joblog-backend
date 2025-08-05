@@ -28,6 +28,9 @@ repositories {
 }
 
 dependencies {
+    // build.gradle
+    implementation("org.springframework.kafka:spring-kafka")
+
     // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
 
