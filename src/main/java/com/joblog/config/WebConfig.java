@@ -1,9 +1,13 @@
 package com.joblog.config;
 
 import com.joblog.common.resolver.LoginUserArgumentResolver;
+import com.joblog.notification.kafka.event.NotificationEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -31,11 +35,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + absolutePath + "/");
     }
 
-    //    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(jwtInterceptor)
-//                .addPathPatterns("/**")
-//                .excludePathPatterns("/auth/login", "/users/join");
-//
-//    }
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, NotificationEvent> kafkaListenerContainerFactory(
+            ConsumerFactory<String, NotificationEvent> consumerFactory) {
+        ConcurrentKafkaListenerContainerFactory<String, NotificationEvent> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory);
+        return factory;
+    }
 }

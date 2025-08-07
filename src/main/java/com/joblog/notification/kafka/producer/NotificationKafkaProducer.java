@@ -1,12 +1,13 @@
 package com.joblog.notification.kafka.producer;
 
 import com.joblog.notification.kafka.event.NotificationEvent;
-import io.lettuce.core.dynamic.annotation.CommandNaming;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-@CommandNaming
+@Component
 @RequiredArgsConstructor
 public class NotificationKafkaProducer {
     private final KafkaTemplate<String, NotificationEvent> kafkaTemplate;
