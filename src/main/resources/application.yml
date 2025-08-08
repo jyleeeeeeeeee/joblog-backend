@@ -60,8 +60,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
-
-
   kafka:
     bootstrap-servers: localhost:9092
     consumer:

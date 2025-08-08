@@ -40,7 +40,7 @@ services:
       - "8080:8080"
     env_file: .env
     environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_PROFILES_ACTIVE: dev
     restart: always
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
