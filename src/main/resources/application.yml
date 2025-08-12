@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
   session:
     store-type: redis
     timeout: 1800s  # ✅ 세션 자체의 TTL (예: 30분)

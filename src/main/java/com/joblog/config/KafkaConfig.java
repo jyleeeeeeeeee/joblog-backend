@@ -1,6 +1,10 @@
 package com.joblog.config;
 
+import com.joblog.notification.domain.repository.NotificationRepository;
+import com.joblog.notification.kafka.consumer.NotificationKafkaConsumer;
 import com.joblog.notification.kafka.event.NotificationEvent;
+import com.joblog.notification.kafka.producer.NotificationKafkaProducer;
+import lombok.RequiredArgsConstructor;
 import nonapi.io.github.classgraph.json.JSONSerializer;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -9,6 +13,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
@@ -17,12 +22,16 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configurable
+//@Configuration
 @EnableKafka
+@RequiredArgsConstructor
 public class KafkaConfig {
 
     // Kafka 브로커 주소 (Docker 환경이면 'kafka:9092'로 변경 가능)
     private static final String BOOTSTRAP_SERVERS = "localhost:9092";
+    private final NotificationRepository notificationRepository;
+    private final KafkaTemplate<String, NotificationEvent> kafkaTemplate;
+
 
     // =========================
     // ✅ Producer 설정
@@ -55,6 +64,18 @@ public class KafkaConfig {
     // =========================
     // ✅ Consumer 설정
     // =========================
+
+    @Bean
+    public NotificationKafkaConsumer notificationKafkaConsumer() {
+        return new NotificationKafkaConsumer(notificationRepository);
+    }
+
+    @Bean
+    public NotificationKafkaProducer notificationKafkaProducer() {
+        return new NotificationKafkaProducer(kafkaTemplate);
+    }
+
+
     @Bean // ConsumerFactory Bean 등록
     public ConsumerFactory<String ,NotificationEvent> consumerFactory() {
         // JSON → NotificationEvent 변환을 위한 JsonDeserializer 생성
