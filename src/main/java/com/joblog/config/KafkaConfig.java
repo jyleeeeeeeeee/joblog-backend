@@ -22,15 +22,15 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Configuration
+@Configuration
 @EnableKafka
 @RequiredArgsConstructor
 public class KafkaConfig {
 
     // Kafka 브로커 주소 (Docker 환경이면 'kafka:9092'로 변경 가능)
     private static final String BOOTSTRAP_SERVERS = "localhost:9092";
-    private final NotificationRepository notificationRepository;
-    private final KafkaTemplate<String, NotificationEvent> kafkaTemplate;
+//    private final NotificationRepository notificationRepository;
+//    private final KafkaTemplate<String, NotificationEvent> kafkaTemplate;
 
 
     // =========================
@@ -60,21 +60,6 @@ public class KafkaConfig {
         // KafkaTemplate : 메시지를 Kafka 토픽으로 전송
         return new KafkaTemplate<>(producerFactory());
     }
-
-    // =========================
-    // ✅ Consumer 설정
-    // =========================
-
-    @Bean
-    public NotificationKafkaConsumer notificationKafkaConsumer() {
-        return new NotificationKafkaConsumer(notificationRepository);
-    }
-
-    @Bean
-    public NotificationKafkaProducer notificationKafkaProducer() {
-        return new NotificationKafkaProducer(kafkaTemplate);
-    }
-
 
     @Bean // ConsumerFactory Bean 등록
     public ConsumerFactory<String ,NotificationEvent> consumerFactory() {

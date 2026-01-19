@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Map;
+
 import static com.joblog.common.AppConstants.JWT_COOKIE_NAME;
 
 //@Component
@@ -28,8 +30,8 @@ public class JwtInterceptor implements HandlerInterceptor {
             }
         }
 
-        boolean validToken = jwtProvider.isValidToken(token);
-        if (token == null || !validToken) {
+        Map<String, Object> validMap = jwtProvider.isValidToken(token);
+        if (token == null || !(Boolean) validMap.get("isValid")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }

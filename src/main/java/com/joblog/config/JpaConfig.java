@@ -1,18 +1,33 @@
 package com.joblog.config;
 
+import com.joblog.auth.CustomUserDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
 @Configuration
 @EnableJpaAuditing
 public class JpaConfig {
-
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return () -> Optional.of("");
+        return () -> {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return Optional.empty();
+            }
+
+            Object principal = authentication.getPrincipal();
+            if(principal instanceof CustomUserDetails userDetails) {
+                return Optional.of(userDetails.getUsername());
+                // 또는 userDetails.getUser().getId().toString()
+            }
+            return Optional.empty();
+        };
     }
 }

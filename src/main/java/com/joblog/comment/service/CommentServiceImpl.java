@@ -35,17 +35,15 @@ public class CommentServiceImpl implements CommentService {
                 .post(post)
                 .user(user)
                 .build();
-
         post.addComment(comment);
 
         Comment saved = commentRepository.save(comment);
         Long postOwnerId = saved.getPost().getUser().getId();
 
-
         if(!user.getId().equals(postOwnerId)) {
             NotificationEvent event = NotificationEvent.builder()
                     .receiverId(postOwnerId)
-                    .content("새 댓글이 달렸습니다: " + saved.getContent())
+                    .content("새 댓글 : " + saved.getContent())
                     .type(NotificationType.COMMENT)
                     .build();
 

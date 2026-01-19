@@ -6,6 +6,7 @@ import com.joblog.common.entity.BaseEntity;
 import com.joblog.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Post extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = CascadeType.ALL)
+    @BatchSize(size = 50)
     private List<Comment> comments = new ArrayList<>();
 
     @Builder.Default

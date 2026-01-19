@@ -2,6 +2,7 @@ package com.joblog.auth.jwt;
 
 import com.joblog.auth.CustomUserDetails;
 import com.joblog.auth.CustomUserDetailsService;
+import com.joblog.common.exception.ErrorResponse;
 import com.joblog.common.exception.JwtInvalid401Exception;
 import com.joblog.common.exception.JwtInvalid403Exception;
 import jakarta.servlet.FilterChain;
@@ -11,19 +12,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.pattern.PatternParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 import static com.joblog.common.AppConstants.JWT_COOKIE_NAME;
 import static com.joblog.common.AppConstants.exceptURI;
@@ -40,29 +41,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("🔍 Filtering URI: {}", request.getRequestURI());
-        // ✅ JWT 인증 없이 통과시킬 경로 (Spring Security permitAll()과 동일하게)
-        AntPathMatcher pathMatcher = new AntPathMatcher();
-        String requestURI = request.getRequestURI();
-
-        for (String pattern : exceptURI) {
-            if (pathMatcher.match(pattern, requestURI)) {
-                log.info("공개 URI 요청: {}", requestURI);
-                filterChain.doFilter(request, response);
-                return;
-            }
-        }
-
         // 1. Authorization 헤더에서 JWT 추출
         String token = resolveToken(request);
         // ✅ 토큰이 없으면 그냥 다음 필터로 넘김 (로그인 안 한 사용자도 접근 가능한 페이지 대비)
         if (token == null) {
             log.info("⚠️ No JWT token - allowing through");
-            filterChain.doFilter(request, response);
-            return;
+            try {
+                filterChain.doFilter(request, response);
+                return;
+            } catch (PatternParseException e) {
+                e.printStackTrace();
+            }
         }
 
-        if (!jwtProvider.isValidToken(token)) {
-            throw new JwtInvalid403Exception("유효하지 않은 JWT 토큰입니다.");
+        Map<String, Object> validMap = jwtProvider.isValidToken(token);
+        if (!(Boolean) validMap.get("isValid")) {
+            Exception e = (Exception) validMap.get("exception");
+            HttpStatus status;
+            if (e instanceof JwtInvalid401Exception) {
+                status = HttpStatus.UNAUTHORIZED;
+            } else if (e instanceof JwtInvalid403Exception) {
+                status = HttpStatus.FORBIDDEN;
+            } else {
+                status = HttpStatus.BAD_REQUEST;
+            }
+
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setContentType("application/json");
+            ErrorResponse errorResponse = new ErrorResponse(status.name(), e.getMessage());
+
+            response.getWriter().write(errorResponse.toString());
+            return;
         }
 
         // 2. 토큰이 유효하면 이메일로 사용자 조회
@@ -84,7 +93,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 5. 다음 필터로 이동
         filterChain.doFilter(request, response);
     }
-
 
 
     // HTTP 헤더에서 토큰 추출

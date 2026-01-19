@@ -23,18 +23,19 @@ public final class AppConstants {
     public static final String KAKAO = "kakao";
 
     public static final String[] exceptURI = {
-//            "/",
             "/login",
             "/auth/login",
-            "/auth/session-check",
+            "/session-check",
             "/users/join",
             "/session/login",
-            "/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png", "/default-ui.css"
-//            "/swagger-ui/**",
-//            "/swagger-ui.html",
-//            "/swagger-resources/**",
-//            "/v3/api-docs/**",
-//            "/v3/api-docs",
-//            "/webjars/**"
+            "/posts",
+
+            "/favicon.ico",
+            "/apple-touch-icon*.png",
+            "/**.css",
+            "/**.js",
+            "/**.png",
+            "/**.jpg",
+            "/**.svg"
     };
 }

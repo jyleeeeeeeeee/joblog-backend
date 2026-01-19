@@ -82,6 +82,7 @@ public class SecurityConfigCommon {
             .authorizeHttpRequests(auth -> auth
                 // ✅ 인증 없이 허용할 경로
                 .requestMatchers(exceptURI).permitAll()
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
                 // ✅ 게시글 관련 (로그인 유저만 가능)
                 .requestMatchers(HttpMethod.POST, "/posts/**").hasRole("USER")
                 .requestMatchers(HttpMethod.PATCH, "/posts/**").hasRole("USER")

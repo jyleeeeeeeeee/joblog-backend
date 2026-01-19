@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface PostRepositoryCustom {
 
-    Page<Post> search(PostSearchCondition condition, Pageable pageable);
+//    Page<Post> search(PostSearchCondition condition, Pageable pageable);
     Optional<Post> searchOne(@Param("postId") Long postId);
 
 //    @Query("select p from Post p join fetch p.author where p.id = :postId")

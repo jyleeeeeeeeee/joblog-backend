@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -46,12 +44,17 @@ public class JwtProvider {
     }
 
     // 토큰 유효성 검증
-    public boolean isValidToken(String token) {
+    public Map<String, Object> isValidToken(String token) {
+        Map<String, Object> result = new HashMap<>();
+        boolean isValid = false;
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
+            isValid = true;
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            result.put("exception", e);
+        } finally {
+            result.put("isValid", isValid);
+            return result;
         }
     }
 

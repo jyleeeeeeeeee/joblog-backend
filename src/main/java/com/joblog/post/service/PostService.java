@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +61,6 @@ public class PostService {
                 fileAttachment.setFilePath(uploadDir + "/" + storedFilename);
 
                 post.addAttachment(fileAttachment);
-
             }
         }
 
@@ -76,8 +74,7 @@ public class PostService {
      */
     public PostResponse searchPostOne(Long id) {
         Post post = postRepository.searchOne(id).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다"));
-
-        return new PostResponse(post, post.getComments());
+        return new PostResponse(post);
 
     }
     /**
@@ -86,7 +83,7 @@ public class PostService {
      * @param pageable
      * @return 게시글 목록
      */
-    public Page<PostResponse> searchPost(PostSearchCondition condition, Pageable pageable) {
+    public Page<PostResponse> searchPosts(PostSearchCondition condition, Pageable pageable) {
         return postRepository.search(condition, pageable).map(PostResponse::new);
     }
 

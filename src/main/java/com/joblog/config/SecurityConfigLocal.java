@@ -1,6 +1,7 @@
 package com.joblog.config;
 
 import com.joblog.auth.jwt.JwtAuthenticationFilter;
+import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -31,10 +34,9 @@ public class SecurityConfigLocal {
     @Bean
     public CommandLineRunner logFilters(FilterChainProxy filterChainProxy) {
         return args -> {
-            log.debug("📦 Registered Filters");
-            filterChainProxy.getFilterChains().forEach(chain -> {
-                chain.getFilters().forEach(filter -> log.debug(filter.getClass().getName()));
-            });
+            System.out.println("========================📦 Registered Filters Start========================");
+            filterChainProxy.getFilterChains().forEach(chain -> chain.getFilters().forEach(filter -> System.out.println(filter.getClass().getName())));
+            System.out.println("========================📦 Registered Filters  End ========================");
         };
     }
 }

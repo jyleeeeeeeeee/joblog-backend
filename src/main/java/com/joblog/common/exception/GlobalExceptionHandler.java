@@ -54,7 +54,6 @@ public class GlobalExceptionHandler {
     }
 
 
-
     // 그 외 예외 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception e) {
@@ -66,20 +65,20 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of("INTERNAL_SERVER_ERROR", message));
     }
 
-    @ExceptionHandler(JwtInvalid401Exception.class)
-    public ResponseEntity<ErrorResponse> handleJwt401Invalid(JwtInvalid401Exception e) {
-        String message = e.getMessage();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ErrorResponse.of("UNAUTHORIZED", message));
-    }
+    @ExceptionHandler(JwtInvalidException.class)
+    public ResponseEntity<ErrorResponse> handleJwtInvalid(JwtInvalidException e) {
+        HttpStatus status;
+        if (e instanceof JwtInvalid401Exception) {
+            status = HttpStatus.UNAUTHORIZED;
+        } else if (e instanceof JwtInvalid403Exception) {
+            status = HttpStatus.FORBIDDEN;
+        } else {
+            status = HttpStatus.BAD_REQUEST;
+        }
 
-    @ExceptionHandler(JwtInvalid403Exception.class)
-    public ResponseEntity<ErrorResponse> handleJwt403Invalid(JwtInvalid401Exception e) {
-        String message = e.getMessage();
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ErrorResponse.of("FORBIDDEN", message));
+        return ResponseEntity.status(status)
+                .body(ErrorResponse.of(status.name(), e.getMessage()));
     }
-
 
     @ExceptionHandler(OAuth2AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleJwt403Invalid(OAuth2AuthenticationException e) {
@@ -87,7 +86,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorResponse.of("FORBIDDEN", message));
     }
-
 
 
 }

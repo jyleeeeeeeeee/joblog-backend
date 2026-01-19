@@ -1,7 +1,7 @@
 package com.joblog.post.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joblog.auth.CustomUserDetails;
-import com.joblog.post.domain.Post;
 import com.joblog.post.dto.PostRequest;
 import com.joblog.post.dto.PostResponse;
 import com.joblog.post.dto.PostSearchCondition;
@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +34,14 @@ public class PostController {
     private final PostLikeService postLikeService;
 
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Long> createPost(
-            @RequestParam("title") String title,
-            @RequestParam("content") String content,
+//            @RequestPart("request") PostRequest request,
+            @RequestPart("request") String requestStr,
             @RequestParam(value = "attachments", required = false) List<MultipartFile> attachments,
             @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         User user = userDetails.getUser();
-        PostRequest request = new PostRequest(title, content);
+        PostRequest request = new ObjectMapper().readValue(requestStr, PostRequest.class);
         Long postId = postService.create(request, attachments, user);
         return ResponseEntity.status(HttpStatus.CREATED).body(postId);
     }
@@ -49,14 +50,13 @@ public class PostController {
     @GetMapping
     public ResponseEntity<Page<PostResponse>> searchPost(
             @ModelAttribute PostSearchCondition condition, Pageable pageable) {
-        Page<PostResponse> posts = postService.searchPost(condition, pageable);
+        Page<PostResponse> posts = postService.searchPosts(condition, pageable);
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> searchPost(@PathVariable Long id) {
         PostResponse postResponse = postService.searchPostOne(id);
-
         return ResponseEntity.ok(postResponse);
     }
 

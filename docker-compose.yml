@@ -1,4 +1,7 @@
 services:
+  # ==========================
+  # Redis (세션 저장소)
+  # ==========================
   joblog-redis:
     image: redis:7.2
     container_name: joblog-redis
@@ -10,55 +13,70 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  joblog-mysql:
-    image: mysql:8.0
-    container_name: joblog-mysql
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: always
-  joblog-app:
-    image: jyl9311/joblog
-    container_name: joblog-app
-    depends_on:
-      joblog-mysql:
-        condition: service_healthy
-      joblog-redis:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    env_file: .env
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-    restart: always
+#  joblog-mysql:
+#    image: mysql:8.0
+#    container_name: joblog-mysql
+#    environment:
+#      MYSQL_DATABASE: ${MYSQL_DATABASE}
+#      MYSQL_USER: ${MYSQL_USER}
+#      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+#      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#    ports:
+#      - "3306:3306"
+#    volumes:
+#      - mysql-data:/var/lib/mysql
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    restart: always
+#  joblog-app:
+#    image: jyl9311/joblog
+#    container_name: joblog-app
+#    depends_on:
+#      joblog-mysql:
+#        condition: service_healthy
+#      joblog-redis:
+#        condition: service_healthy
+#    ports:
+#      - "8080:8080"
+#    env_file: .env
+#    environment:
+#      SPRING_PROFILES_ACTIVE: dev
+#    restart: always
+  # ==========================
+  # Zookeeper (Kafka 필수)
+  # ==========================
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.0
-    container_name: kafka-zookeeper
+    image: bitnami/zookeeper:3.9
+    container_name: joblog-zookeeper
+    ports:
+      - "2181:2181"
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    restart: always
 
-    kafka:
-      image: confluentinc/cp-kafka:7.5.0
-      container_name: kafka-broker
-      ports:
-        - "9092:9092"
-      depends_on:
-        - zookeeper
-      environment:
-        KAFKA_BROKER_ID: 1
-        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # ==========================
+  # Kafka 브로커
+  # ==========================
+  kafka:
+    image: bitnami/kafka:3.7
+    container_name: joblog-kafka
+    ports:
+      - "9092:9092" # 로컬 PC에서 접속 가능
+    environment:
+      # 브로커 ID
+      - KAFKA_CFG_BROKER_ID=1
+      # Kafka 리스너 설정 (내부/외부 분리 가능)
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://joblog-kafka:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      # 기본 토픽 자동 생성 허용
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    depends_on:
+      - zookeeper
+    restart: always
 volumes:
   mysql-data:
